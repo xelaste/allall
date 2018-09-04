@@ -10,7 +10,7 @@
     "test": "node node_modules/karma/bin/karma start",
     "karma": "node node_modules/karma/bin/karma start",
     "webpack": "node node_modules/webpack/bin/webpack.js -d -w",
-    "mongo":"\"C:\\Program Files\\MongoDB\\Server\\3.6\\bin\\\"mongod.exe"   
+    "mongo":"\"/C:/Program Files/MongoDB/Server/3.6/bin\"/mongod.exe"
     },
   "author": "",
   "license": "ISC",
