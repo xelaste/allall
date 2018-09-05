@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Wed Aug 10 2016 22:07:33 GMT+0300 (IDT)
 
-var webpackConfig = require('./webpack.config.js');
+var webpackConfig = require('./webpack.config.js')();
 webpackConfig.devtool = 'inline-source-map';
 webpackConfig.module.loaders.push({
   test: /\.js$/,

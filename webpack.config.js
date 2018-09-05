@@ -5,7 +5,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
 
-module.exports = conf = {
+let conf = {
   context: path.resolve(__dirname, 'src'), // `__dirname` is root of project and `src` is source
   entry: {
     app: [
@@ -83,4 +83,4 @@ module.exports = conf = {
     ]
   },
 };
-//module.exports = (env, argv) => {return conf};
+module.exports = (env, argv) => {return conf};
