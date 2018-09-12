@@ -3,22 +3,22 @@ var db = new loki('quickstart.db', {
     autoload: true,
     autoloadCallback : databaseInitialize,
     autosave: true, 
-    autosaveInterval: 500
+    autosaveInterval: 4000
 });
 
 function databaseInitialize() {
-    var players = db.getCollection("players");
-  
+    let players = db.getCollection("players");
     if (players === null) {
         players = db.addCollection("players");
     }
     return players;
 }  
 
-const players = module.exports = databaseInitialize();
+module.exports = new Object();
 
 module.exports.createPlayer = function (newPlayer, callback) 
 {
+    let players = db.getCollection("players");
     players.insert(newPlayer)
     callback(null,newPlayer);
 };
@@ -26,12 +26,15 @@ module.exports.createPlayer = function (newPlayer, callback)
 // Fetch All Players
 module.exports.getPlayers = function (callback, limit)
 {
-    result = players.find();
+    let players = db.getCollection("players");
+    let result = players.data
+    console.log( players)
     callback(null,result);
 };
 
 module.exports.updatePlayer = function (updatedPlayer, callback) 
 {
+    let players = db.getCollection("players");
     let result = players.findOne({ name: updatedPlayer.name });
     result.score=updatedPlayer.score;
     players.update(result);

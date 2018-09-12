@@ -45,14 +45,15 @@ const logger = winston.createLogger({
   });
 
 var app = express();
-logger.debug('Hello log files! %s', 'aaa');
+//logger.debug('Hello log files! %s', 'aaa');
 
 app.use(express.static('public'));
 app.use(express.static('dist'));
 app.use(express.static('css'));
 app.use(bodyParser.json())
 
-app.get('/players', function (req, res) {
+app.get('/players', function (req, res) 
+{
     logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' })
     Player.getPlayers(function (err, players) {
@@ -63,7 +64,8 @@ app.get('/players', function (req, res) {
             res.send(err);
         } else {
             logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            logger.debug("Players: " + players);
+            logger.debug("Players: ");
+            logger.debug(players)
             res.send(players)
             logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         }
@@ -74,39 +76,39 @@ app.get('/players', function (req, res) {
 
 
 app.post('/players', function (req, res) {
-    console.log(req.body);
+    logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' });
-    var newPlayer = new Player({
+    var newPlayer = {
         name: req.body.name,
         score: 0,
         email: "",
         username: req.body.name,
         password: '',
         profileImage: 'noimage.png'
-    });
+    };
     Player.createPlayer(newPlayer,
         function (err, player) {
             if (err) throw err;
-            console.log(player);
+            logger.error(player);
             res.send(player)
         });
 })
 
 app.put('/players', function (req, res) {
-    console.log(req.body);
+    logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' });
-    var updatedPlayer = new Player({
+    var updatedPlayer = {
         name: req.body.name,
         score: req.body.score,
         email: "",
         username: req.body.name,
         password: '',
         profileImage: 'noimage.png'
-    });
+    };
     Player.updatePlayer(updatedPlayer,
         function (err, player) {
             if (err) throw err;
-            console.log(player);
+            logger.error(player);
             res.send(player)
         });
 })

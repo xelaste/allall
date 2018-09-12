@@ -1,8 +1,8 @@
-if (process.env.DB-TYPE-MONGO)
+if (process.env.DB_TYPE_MONGO)
 {
-    module.exports = require ("./playerLoki");
+    module.exports = require ("./playerMongo");
 }
 else
 {
-    module.exports = require ("./playerMongo");
+    module.exports = require ("./playerLoki");
 }

@@ -30,7 +30,13 @@ var PlayerSchema = mongoose.Schema({
 
 var player = module.exports = mongoose.model('Player', PlayerSchema);
 
-module.exports.createPlayer = function (newPlayer, callback) {
+module.exports.createPlayer = function (data, callback) 
+{
+    let newPlayer = new player();
+    newPlayer.name=data.name;
+    newPlayer.score=data.score;
+    newPlayer.username=data.username,
+    newPlayer.profileImage='noimage.png';
     newPlayer.save(callback);
 };
 
@@ -39,12 +45,12 @@ module.exports.getPlayers = function (callback, limit) {
     return player.find(callback).limit(limit);
 };
 
-module.exports.updatePlayer = function (updatedPlayer, callback) 
+module.exports.updatePlayer = function (data, callback) 
 {
     player.findOneAndUpdate(
-        { name: updatedPlayer.name },
+        { name: data.name },
         {
-            $set: { "score": updatedPlayer.score }
+            $set: { "score": data.score }
         },
         {save: true, upsert: true},
         callback
