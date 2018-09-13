@@ -16,6 +16,8 @@ function databaseInitialize() {
 
 module.exports = new Object();
 
+module.exports.init=databaseInitialize;
+
 module.exports.createPlayer = function (newPlayer, callback) 
 {
     let players = db.getCollection("players");
@@ -27,8 +29,7 @@ module.exports.createPlayer = function (newPlayer, callback)
 module.exports.getPlayers = function (callback, limit)
 {
     let players = db.getCollection("players");
-    let result = players.data
-    console.log( players)
+    let result = players.find();
     callback(null,result);
 };
 

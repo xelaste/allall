@@ -1,59 +1,68 @@
 import Immutable from 'immutable';
 import { symbols as gameSymbols } from '../actions/bullscowsgame';
-import { getFormValues } from 'redux-form';
+import AutoPlay from '../auto/autoplay'
 
+const autoPlay = new AutoPlay();
 const initialState = Immutable.fromJS(
     {
         gamingNow: false,
+        heap: autoPlay.getInitialSet(),
         secret: [0, 0, 0, 0],
-        validValues: ["123456789", "123456789", "123456789", "123456789"],
+        vsComputer: false,
         results: []
     }
 );
 
-function newGame(state = initialState, secret) {
-    let results = [];
-    return initialState.set("gamingNow", true).set("secret", secret);
+function newGame(state = initialState, secret, vsComputer) {
+    return initialState.set("gamingNow", true).set("secret", secret).set("vsComputer", vsComputer).set();
 }
 
 
 function skip(state) {
     let results = state.get("results");
-    let result = Immutable.fromJS(
-        {
-            guess: 'skip',
-            exist: "-",
-            matches: "-"
-        }
-    )
-    results = results.push(result);
-    return state.set("results", results);
+    let vsComputer = state.get("vsComputer");
+    let heap=[...state.get("heap")];
+    if (vsComputer) 
+    {
+        let num = [...heap[Math.floor(Math.random() * heap.length)]];
+        let secret = [...state.get("secret")]
+        let filter = autoPlay.calculate(secret, num)
+        heap = autoPlay.prune(heap, filter, num);
+        let result = Immutable.fromJS(
+            {
+                guess: num,
+                exist: filter.exist,
+                matches: filter.matches
+            }
+
+        )
+        results = results.push(result);
+        
+    }
+    else {
+        let result = Immutable.fromJS(
+            {
+                guess: 'skip',
+                exist: "-",
+                matches: "-"
+            }
+
+        )
+        results = results.push(result);
+    }
+    return state.set("heap",heap).set("results", results);
 }
 
 
 function play(state, guess) {
     let secret = [...state.get("secret")]
-    let exist = 0;
-    let matches = 0
-    for (let i = 0; i < guess.length; i++) {
-        for (let j = 0; j < secret.length; j++) {
-            if (secret[j] === guess[i]) 
-            {
-                if (i === j) {
-                    matches++;
-                }
-                else {
-                    exist++;
-                }
-            }
-        }
-    }
+    let filter = autoPlay.calculate(secret, guess)
     let results = state.get("results");
     let result = Immutable.fromJS(
         {
             guess: guess,
-            exist: exist,
-            matches: matches
+            exist: filter.exist,
+            matches: filter.matches
         }
     )
     results = results.push(result);
@@ -65,7 +74,7 @@ export function reducer(state = initialState, action) {
         case gameSymbols.play:
             return play(state, action.payload);
         case gameSymbols.newGame:
-            return newGame(state, action.payload.secret);
+            return newGame(state, action.payload.secret, action.payload.vsSomputer);
 
         case gameSymbols.stop:
             return state.set("gamingNow", false);

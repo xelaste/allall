@@ -25,6 +25,7 @@ function mapStateToProps(state) {
     secret: [...state.game.get('secret')],
     gamingNow: state.game.get('gamingNow'),
     results: [...state.game.get("results")],
+    vsComputer: state.game.get("vsComputer"),
     values: getFormValues('gameForm')(state)
   }
 }
@@ -88,7 +89,8 @@ class Game extends React.Component {
     submitting: PropTypes.bool,
     gamingNow: PropTypes.bool,
     error: PropTypes.string,
-    results: PropTypes.array
+    results: PropTypes.array,
+    vsComputer: PropTypes.bool
   };
 
   isWin() {
@@ -96,6 +98,9 @@ class Game extends React.Component {
   }
   isLost() {
     return this.props.results.length >= 10 && !this.isWin();
+  }
+  vsComputer() {
+    return this.props.vsComputer;
   }
 
   fillGuesses() {
@@ -110,49 +115,50 @@ class Game extends React.Component {
   }
   restart() {
     resetTimer = true;
-    this.props.dispatch(gameActions.newGame(generateSecretArray()));
+    this.props.dispatch(gameActions.newGame(generateSecretArray(),this.vsComputer()));
     this.props.dispatch(reset('gameForm'));
   }
 
   render() {
     return (<div className="panel h-100">
-      {!this.isWin() && !this.isLost() &&
-        < div className="row w-50">
-          <div className="col-sm-6" style={{ backgroundColor: 'yellow' }}>
-            <table className="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th >#</th>
-                  <th >guessed</th>
-                  <th >Exists</th>
-                  <th >Match</th>
+      {this.isWin() && <div className="alert alert-success w-25">Winner</div>}
+      {this.isLost() && <div className="alert alert-danger w-25">Game is lost</div>}
+      < div className="row w-50">
+        <div className="col-sm-6" style={{ backgroundColor: 'yellow' }}>
+          <table className="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th >#</th>
+                <th >guessed</th>
+                <th >Cows</th>
+                <th >Bulls</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.fillGuesses().map((item, idx) =>
+                <tr key={idx} className="px-0">
+                  <td>{idx + 1}</td>
+                  <td>{item.guess}</td>
+                  <td>{item.exists}</td>
+                  <td>{item.match}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {this.fillGuesses().map((item, idx) =>
-                  <tr key={idx} className="px-0">
-                    <td>{idx + 1}</td>
-                    <td>{item.guess}</td>
-                    <td>{item.exists}</td>
-                    <td>{item.match}</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="col-sm-6" style={{ backgroundColor: "pink" }}>
-            <GameForm secret={this.props.secret} playerName={this.props.currentPlayer} />
-          </div>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="col-sm-6" style={{ backgroundColor: "pink" }}>
+          <GameForm vsComputer={this.vsComputer()} secret={this.props.secret} playerName={this.props.currentPlayer} />
+        </div>
+        {!this.isWin() && !this.isLost() &&
           <div className="h-100 mt-5">
             <Clock ticks={0} />
           </div>
-        </div>
-      }
-      {this.isWin() && <div className="alert alert-success w-25">Winner</div>}
-      {this.isLost() && <div className="alert alert-danger w-25">Game is lost</div>}
+        }
+      </div>
+
       <div className="panel fixed-bottom">
         <button className="btn btn-primary btn-sm col-md-1 ml-1"
-          type="button" disabled={!this.props.values || this.props.values && !(parseInt(this.props.values.d1) && parseInt(this.props.values.d2) && parseInt(this.props.values.d3) && parseInt(this.props.values.d4))}
+          type="button" disabled={this.vsComputer() || !this.props.values || this.props.values && !(parseInt(this.props.values.d1) && parseInt(this.props.values.d2) && parseInt(this.props.values.d3) && parseInt(this.props.values.d4))}
           onClick={() => {
             let guess = [parseInt(this.props.values.d1), parseInt(this.props.values.d2), parseInt(this.props.values.d3), parseInt(this.props.values.d4)];
             if (_.isEqual(guess, this.props.secret)) {

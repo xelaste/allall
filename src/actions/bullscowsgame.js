@@ -21,10 +21,11 @@ export function play(guess) {
   };
 }
 
-export function newGame(secret) {
+export function newGame(secret,vsSomputer=false) 
+{
   return {
     type: symbols.newGame,
-    payload: { secret: secret },
+    payload: { secret: secret,vsSomputer:vsSomputer },
   };
 }
 

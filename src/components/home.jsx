@@ -141,6 +141,12 @@ class Home extends React.Component {
               onClick={() => this.props.dispatch(gameActions.newGame(generateSecretArray()))}>
               Play
             </button>
+            <button className="btn btn-primary btn-sm col-md-1 ml-1"
+              type="button" 
+              onClick={() => this.props.dispatch(gameActions.newGame(generateSecretArray(),true))}>
+              Play Vs Computer
+            </button>
+
           </div>
         </div>
       )

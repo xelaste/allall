@@ -24,14 +24,16 @@ const GameForm = props => {
     }
     return (
         <div className="mb-3">
-            <h4>Player: {props.playerName}</h4>
-            <h4>Original</h4>
-            <h4>{props.secret.map(x=>x)}</h4>
-            <h4>enter number</h4>
+            {!props.vsComputer && <h4>Player: {props.playerName}</h4>}
+            <h4>Secret</h4>
+            {!props.vsComputer && <h4>{props.secret.map(x=>"*")}</h4>}
+            {props.vsComputer && <h4>{props.secret.map(x=>x)}</h4>}
+            {!props.vsComputer && <h4>enter number</h4>}
             <form onSubmit={handleSubmit} className="form-horizontal">
                 {error && <div className="mt-10 px-0 col-sm-6 alert alert-danger">{error}</div>}
+                {!props.vsComputer &&
                 <div className="form-row w-100">
-                    <span className="col-md-1 mr-1">
+                    <span className="col-md-2 mr-1">
                         <Field
                             name="d1"
                             component="input"
@@ -42,7 +44,7 @@ const GameForm = props => {
                             onChange={onChange}
                         />
                     </span>
-                    <span className="col-md-1 mr-1">
+                    <span className="col-md-2 mr-1">
                         <Field
                             name="d2"
                             component="input"
@@ -52,7 +54,7 @@ const GameForm = props => {
                             normalize={digit}
                         />
                     </span>
-                    <span className="col-md-1 mr-1">
+                    <span className="col-md-2 mr-1">
                         <Field
                             name="d3"
                             component="input"
@@ -62,7 +64,7 @@ const GameForm = props => {
                             normalize={digit}
                         />
                     </span>
-                    <span className="col-md-1 mr-1">
+                    <span className="col-md-2 mr-1">
                         <Field
                             name="d4"
                             component="input"
@@ -74,6 +76,7 @@ const GameForm = props => {
                         />
                     </span>
                 </div>
+                }
             </form>
         </div>
     );

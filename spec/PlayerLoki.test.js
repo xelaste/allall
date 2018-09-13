@@ -1,7 +1,13 @@
-const players = require ("../models/playerLoki");
+const players = require ("../models/player");
+var collection = null;
+beforeEach(() => {
+    collection = players.init();
+    collection.clear();
+  });
 test('add new player aa', () => {
+    players.init();
     players.createPlayer({name: "aa" ,    score: 0},()=>{});
-    var tyrfing = players.findOne({'name': 'aa'});
+    var tyrfing = collection.findOne({'name': 'aa'});
     expect(tyrfing).not.toBeNull();
     expect(tyrfing.score).toBe(0);
     console.log(tyrfing);
@@ -9,7 +15,7 @@ test('add new player aa', () => {
   test('find all the players', () => {
     players.createPlayer({name: "bb" ,    score: 0},()=>{});
     players.createPlayer({name: "cc" ,    score: 0},()=>{});
-    var tyrfing = players.find();
+    var tyrfing = collection.find();
     console.log(tyrfing);
     expect(tyrfing.length).toBeGreaterThan(0);
     
@@ -17,12 +23,12 @@ test('add new player aa', () => {
 
   test('Update the player', () => {
     players.createPlayer({name: "bb" ,    score: 0},()=>{});
-    var tyrfing = players.findOne({'name': 'bb'});
+    var tyrfing = collection.findOne({'name': 'bb'});
     console.log(tyrfing.score);
     let score = tyrfing.score
     tyrfing.score++;
     players.updatePlayer(tyrfing,()=>{})
-    tyrfing = players.findOne({'name': 'bb'});
+    tyrfing = collection.findOne({'name': 'bb'});
     expect(tyrfing.score).toEqual(score + 1 );
     console.log(tyrfing);
   });
