@@ -1,17 +1,8 @@
 // Karma configuration
 // Generated on Wed Aug 10 2016 22:07:33 GMT+0300 (IDT)
 
-var webpackConfig = require('./webpack.config.js')();
+var webpackConfig = {};
 webpackConfig.devtool = 'inline-source-map';
-webpackConfig.module.loaders.push({
-  test: /\.js$/,
-  exclude: /(spec|node_modules|bower_components)/,
-  loader: 'babel', // 'babel-loader' is also a legal name to reference
-  query: {
-    presets: ['es2015'],
-    plugins: ["transform-class-properties", 'istanbul']
-  }
-});
 
 module.exports = function(config) {
   config.set({
@@ -27,7 +18,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'dist/vendor-bundle.js',
       'spec/tests.bundle.js'
     ],
 
@@ -51,7 +41,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'kjhtml', 'coverage'],
+    reporters: ['mocha','progress', 'kjhtml', 'coverage'],
 
 
     // web server port
@@ -64,7 +54,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_WARN,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -73,7 +63,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    //browsers: ['Chrome'],
+   // browsers: ['Chrome'],
     //chromeOptions: {
     //  args: [ "--headless", "--disable-gpu", "--window-size=800x600" ]
     //},
@@ -82,6 +72,7 @@ module.exports = function(config) {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
+    
     browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeHeadless: {
@@ -95,6 +86,7 @@ module.exports = function(config) {
         ],
       }
     },
+    
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity

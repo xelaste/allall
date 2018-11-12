@@ -123,7 +123,7 @@ class Game extends React.Component {
     return (<div className="panel h-100">
       {this.isWin() && <div className="alert alert-success w-25">Winner</div>}
       {this.isLost() && <div className="alert alert-danger w-25">Game is lost</div>}
-      < div className="row w-50">
+      < div className="m-1 row w-50">
         <div className="col-sm-6" style={{ backgroundColor: 'yellow' }}>
           <table className="table table-striped table-sm">
             <thead>

@@ -1,4 +1,5 @@
 import {symbols,addPlayer,updateScore} from "../src/actions/player" 
+import { debug } from "util";
 describe('Actions tests', function() 
 {
     it('it should be xxx player added', function() 

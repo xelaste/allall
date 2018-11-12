@@ -6,6 +6,7 @@ const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
 
 let conf = {
+  mode:nodeEnv,
   context: path.resolve(__dirname, 'src'), // `__dirname` is root of project and `src` is source
   entry: {
     app: [
@@ -23,6 +24,18 @@ let conf = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  optimization: {
+    runtimeChunk: "single", // enable "runtime" chunk
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all"
+        }
+      }
+    }
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -31,6 +44,7 @@ let conf = {
     }),
 
     // https://webpack.github.io/docs/list-of-plugins.html#2-explicit-vendor-chunk
+    /*
     new webpack.optimize.CommonsChunkPlugin({
       // This name 'vendor' ties into the entry definition
       name: 'vendor',
@@ -40,10 +54,10 @@ let conf = {
       // In other words, we only put what's in the vendor entry definition in vendor-bundle.js
       minChunks: Infinity,
     }),
+    */
     new ExtractTextPlugin('styles.css')
   ],
   module: {
-    loaders:[],
     rules: [
       {
         test: /\.js$/,
@@ -82,5 +96,11 @@ let conf = {
       },
     ]
   },
+  devServer: {
+    contentBase: [path.join(__dirname, 'public'), path.join(__dirname, 'dist')],
+    compress: true,
+    hot: true,
+    port: 9001
+  }
 };
-module.exports = (env, argv) => {return conf};
+module.exports = (env, argv) => conf;

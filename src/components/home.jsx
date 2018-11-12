@@ -126,7 +126,7 @@ class Home extends React.Component {
         <div className="mt-10 h-100">
           <HomeForm onSubmit={this.handleSubmit.bind(this)} />
           <PlayersList props={this.props} />
-          <div className="panel fixed-bottom">
+          <div className="m-3 panel fixed-bottom">
             <button className="btn btn-primary btn-sm col-md-1 mr-1" type="submit" disabled={this.props.pristine || this.props.submiting}
               type="button"
               onClick={() => this.props.dispatch(submit('homeForm'))}
