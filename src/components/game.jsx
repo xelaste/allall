@@ -34,29 +34,29 @@ function withTimer(Component) {
   return class Timer extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { ticks: 0, start: (new Date()).getTime() };
+      this.state = { ticks: 0, start: (new Date()).getTime(),period:props.period };
     }
 
     componentDidMount() {
-      this.state = { ticks: 0, start: (new Date()).getTime() };
+      this.state = { ticks: 0, start: (new Date()).getTime(),period:this.state.period };
       this.timer = setInterval(this.tick, 100);
     }
 
     componentWillUnmount() {
-      this.state = { ticks: 0, start: (new Date()).getTime() };
+      this.state = { ticks: 0, start: (new Date()).getTime(),period:this.state.period };
       clearInterval(this.timer);
     }
 
     tick = () => {
       if (resetTimer) {
-        this.setState(oldState => ({ ticks: 0, start: (new Date()).getTime() }));
+        this.setState(oldState => ({ ticks: 0, start: (new Date()).getTime(),period:oldState.period }));
         resetTimer = false;
       }
       else {
         let ticks = Math.floor(((new Date()).getTime() - this.state.start) / 1000)
         if (ticks != this.state.ticks) {
           this.setState(state => ({ ticks: ticks }));
-          if (this.state.ticks > 0 && this.state.ticks % 30 == 0) {
+          if (this.state.ticks > 0 && this.state.ticks % this.state.period == 0) {
             store.dispatch(gameActions.skip());
           }
         }
@@ -73,7 +73,7 @@ function withTimer(Component) {
 }
 class Clock extends React.Component {
   render() {
-    return <p><span>Elapsed Time:</span>{30 - this.props.ticks % 30}</p>
+    return <p><span>Elapsed Time:</span>{this.props.period - this.props.ticks % this.props.period}</p>
   }
 }
 
@@ -151,7 +151,7 @@ class Game extends React.Component {
         </div>
         {!this.isWin() && !this.isLost() &&
           <div className="h-100 mt-5">
-            <Clock ticks={0} />
+            <Clock ticks={0} period={this.vsComputer()?2:30}/>
           </div>
         }
       </div>
