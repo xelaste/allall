@@ -10,7 +10,7 @@ var PlayerSchema = mongoose.Schema({
         type: String,
         index: true
     },
-    password: {
+    hash: {
         type: String,
     },
     email: {
@@ -30,29 +30,29 @@ var PlayerSchema = mongoose.Schema({
 
 var player = module.exports = mongoose.model('Player', PlayerSchema);
 
-module.exports.createPlayer = function (data, callback) 
+module.exports.createPlayer = async function (data) 
 {
     let newPlayer = new player();
     newPlayer.name=data.name;
     newPlayer.score=data.score;
     newPlayer.username=data.username,
     newPlayer.profileImage='noimage.png';
-    newPlayer.save(callback);
+    await newPlayer.save();
 };
 
 // Fetch All Classes
-module.exports.getPlayers = function (callback, limit) {
-    return player.find(callback).limit(limit);
+module.exports.getPlayers = async function (limit) {
+    let players = await player.find().limit(limit);
+    return players;
 };
 
-module.exports.updatePlayer = function (data, callback) 
+module.exports.updatePlayer = async function (data) 
 {
-    player.findOneAndUpdate(
+    await player.findOneAndUpdate(
         { name: data.name },
         {
             $set: { "score": data.score }
         },
-        {save: true, upsert: true},
-        callback
+        {save: true, upsert: true}
     )
 };

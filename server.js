@@ -52,30 +52,26 @@ app.use(express.static('dist'));
 app.use(express.static('css'));
 app.use(bodyParser.json())
 
-app.get('/players', function (req, res) 
+app.get('/players', function (req, res,next) 
 {
     logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' })
-    Player.getPlayers(function (err, players) {
-        if (err) {
-            logger.debug("**************************");
-            logger.error(err);
-            logger.debug("**************************");
-            res.send(err);
-        } else {
-            logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            logger.debug("Players: ");
-            logger.debug(players)
-            res.send(players)
-            logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        }
-    }, 1000);
-   
-    
+    Player.getPlayers(1000).then(players=> {
+        logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        logger.debug("Players: ");
+        logger.debug(players)
+        res.send(players)
+        logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    }).catch(error=>{
+        logger.debug("**************************");
+        logger.error(err);
+        logger.debug("**************************");
+        next(err);
+    });
 })
 
 
-app.post('/players', function (req, res) {
+app.post('/players', function (req, res,next) {
     logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' });
     var newPlayer = {
@@ -83,21 +79,25 @@ app.post('/players', function (req, res) {
         score: 0,
         email: "",
         username: req.body.name,
-        password: '',
+        hash: '',
         profileImage: 'noimage.png'
     };
-    Player.createPlayer(newPlayer,
-        function (err, player) {
-            if (err) throw err;
-            logger.error(player);
-            res.send(player)
-        });
-})
-
-app.put('/players', function (req, res) {
+    Player.createPlayer(newPlayer).then(player=>{
+        logger.debug("**************************");
+        logger.debug(player);
+        logger.debug("**************************");
+        res.json(player)}).catch(err=>{
+        logger.debug("**************************");
+        logger.error(err);
+        logger.debug("**************************");
+        next(err)});
+});
+        
+app.put('/players', function (req, res,next) 
+{
     logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' });
-    var updatedPlayer = {
+    let updatedPlayer = {
         name: req.body.name,
         score: req.body.score,
         email: "",
@@ -105,12 +105,15 @@ app.put('/players', function (req, res) {
         password: '',
         profileImage: 'noimage.png'
     };
-    Player.updatePlayer(updatedPlayer,
-        function (err, player) {
-            if (err) throw err;
-            logger.error(player);
-            res.send(player)
-        });
+    Player.updatePlayer(updatedPlayer).then(player=>{
+        logger.debug("**************************");
+        logger.debug(player);
+        logger.debug("**************************");
+        res.json(player)}).catch(err=>{
+        logger.debug("**************************");
+        logger.error(err);
+        logger.debug("**************************");
+        next(err)});
 })
 
 

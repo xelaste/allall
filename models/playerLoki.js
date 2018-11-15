@@ -18,27 +18,28 @@ module.exports = new Object();
 
 module.exports.init=databaseInitialize;
 
-module.exports.createPlayer = function (newPlayer, callback) 
+module.exports.createPlayer = async function (newPlayer) 
 {
     let players = db.getCollection("players");
     players.insert(newPlayer)
-    callback(null,newPlayer);
+    let result = await players.findOne({ name: newPlayer.name });
+    return result;
 };
 
 // Fetch All Players
-module.exports.getPlayers = function (callback, limit)
+module.exports.getPlayers = async function (limit)
 {
     let players = db.getCollection("players");
-    let result = players.find();
-    callback(null,result);
+    result = await players.find().slice(0,limit);
+    return result;
 };
 
-module.exports.updatePlayer = function (updatedPlayer, callback) 
+module.exports.updatePlayer = async function (updatedPlayer) 
 {
     let players = db.getCollection("players");
     let result = players.findOne({ name: updatedPlayer.name });
     result.score=updatedPlayer.score;
-    players.update(result);
-    callback(null,result);
+    await players.update(result);
+    return result;
 };
 
