@@ -5,7 +5,6 @@ beforeEach(() => {
     collection.clear();
   });
 test('add new player aa', () => {
-    players.init();
     player = players.createPlayer({name: "aa" ,    score: 0})
     var tyrfing = collection.findOne({'name': 'aa'});
     expect(tyrfing).not.toBeNull();
@@ -32,4 +31,3 @@ test('add new player aa', () => {
     expect(tyrfing.score).toEqual(score + 1 );
     console.log(tyrfing);
   });
-

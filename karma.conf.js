@@ -1,8 +1,10 @@
 // Karma configuration
 // Generated on Wed Aug 10 2016 22:07:33 GMT+0300 (IDT)
+const path = require('path');
 
 var webpackConfig = {};
 webpackConfig.devtool = 'inline-source-map';
+webpackConfig.mode="development";
 
 module.exports = function(config) {
   config.set({
@@ -18,7 +20,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'spec/tests.bundle.js'
+      'spec/tests.bundle.js',
+      'src/**/*.js'
     ],
 
     // list of files to exclude
@@ -31,6 +34,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'spec/tests.bundle.js': ['webpack','sourcemap' ],
+      'src/**/*.js': ['webpack','sourcemap','coverage']
     },
 
     webpack: webpackConfig,
@@ -89,6 +93,6 @@ module.exports = function(config) {
     
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
   })
 }
