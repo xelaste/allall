@@ -2,7 +2,44 @@
 // Generated on Wed Aug 10 2016 22:07:33 GMT+0300 (IDT)
 const path = require('path');
 
-var webpackConfig = {};
+var webpackConfig = {
+  module: {
+    rules: [
+        {
+            enforce: 'pre',
+            test: /\.js$/,
+            use: ['source-map-loader'],
+            exclude: [
+                /node_modules/,
+                /spec/
+            ]
+        },
+        {
+          test: /\.js$/,
+          exclude: /(spec|node_modules|bower_components)/,
+          loader: 'babel-loader', // 'babel-loader' is also a legal name to reference
+          options: {
+            babelrc: false,
+            presets: ['es2015'],
+            plugins: ["transform-class-properties"]
+          }
+        },
+      
+        {
+            enforce: 'post',
+            test: /\.(js|ts)$/,
+            loader: 'istanbul-instrumenter-loader',
+            options: { esModules: true },
+            exclude: [
+                /node_modules/,
+                /spec/
+            ]
+        },
+        
+        { test: /\.html$/, loader: 'html-loader' }
+    ]
+}
+};
 webpackConfig.devtool = 'inline-source-map';
 webpackConfig.mode="development";
 
@@ -21,8 +58,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'spec/tests.bundle.js',
-      'src/**/*.js'
-    ],
+       ],
 
     // list of files to exclude
     exclude: [
@@ -33,8 +69,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'spec/tests.bundle.js': ['webpack','sourcemap' ],
-      'src/**/*.js': ['webpack','sourcemap','coverage']
+      'spec/tests.bundle.js': ['webpack'],
     },
 
     webpack: webpackConfig,
@@ -45,7 +80,16 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['mocha','progress', 'kjhtml', 'coverage'],
+   // reporters: ['mocha','progress', 'kjhtml', 'coverage'],
+   reporters: ['mocha', 'progress', 'coverage-istanbul' ],
+  coverageIstanbulReporter: {
+    reports: [ 'html','text-summary' ],
+    fixWebpackSourcePaths: true,
+    dir: path.join(__dirname, 'coverage'),
+    verbose: false,
+    // Omit files with no statements, no functions and no branches from the report
+    skipFilesWithNoCoverage: true
+  },
 
 
     // web server port
@@ -58,7 +102,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_WARN,
+    logLevel: config.LOG_INFO,
 
 
     // enable / disable watching file and executing tests whenever any file changes

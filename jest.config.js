@@ -1,5 +1,5 @@
 module.exports = {
     verbose: true,
-    collectCoverage:true,
+    collectCoverage:false,
     coverageReporters:['html']
   };
