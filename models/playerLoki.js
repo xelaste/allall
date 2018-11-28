@@ -22,7 +22,7 @@ module.exports.createPlayer = async function (newPlayer)
 {
     let players = db.getCollection("players");
     players.insert(newPlayer)
-    let result = await players.findOne({ name: newPlayer.name });
+    let result = players.findOne({ name: newPlayer.name });
     return result;
 };
 
@@ -30,7 +30,17 @@ module.exports.createPlayer = async function (newPlayer)
 module.exports.getPlayers = async function (limit)
 {
     let players = db.getCollection("players");
-    result = await players.find().slice(0,limit);
+    result = players.find().slice(0,limit);
+    return result;
+};
+
+// Fetch All Winners
+module.exports.getWinners = async function (limit)
+{
+    let players = db.getCollection("players");
+    let pview = players.addDynamicView('progeny');
+    pview.applySimpleSort('score',true);
+    let result = pview.data().slice(0,limit);
     return result;
 };
 

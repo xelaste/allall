@@ -20,6 +20,20 @@ test('add new player aa', () => {
     
   });
 
+  test('find all the winners', () => {
+    players.createPlayer({name: "bb" ,    score: 0});
+    players.createPlayer({name: "cc" ,    score: 1});
+    players.createPlayer({name: "dd" ,    score: 10});
+    players.createPlayer({name: "xx" ,    score: 100});
+    var tyrfing = players.getWinners(3)
+    expect.assertions(2);
+    return tyrfing.then(data=>{
+      console.log(data);
+      expect(data.length).toBeGreaterThan(0);
+      expect(data[0].name).toBe("xx")
+    });
+  });
+
   test('Update the player', () => {
     players.createPlayer({name: "bb" ,    score: 0});
     var tyrfing = collection.findOne({'name': 'bb'});

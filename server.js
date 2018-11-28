@@ -68,6 +68,21 @@ app.get('/players', function (req, res,next)
     });
 })
 
+app.get('/players/winners', function (req, res,next) 
+{
+    logger.debug(req.body);
+    res.set({ 'content-type': 'application/json;charset=utf-8' })
+    Player.getWinners(3).then(players=> {
+        logger.debug("Players: ");
+        logger.debug(players)
+        res.send(players)
+    }).catch(error=>{
+        logger.debug("**************************");
+        logger.error(err);
+        logger.debug("**************************");
+        next(err);
+    });
+})
 
 app.post('/players', function (req, res,next) {
     logger.debug(req.body);

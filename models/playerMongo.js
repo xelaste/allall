@@ -46,6 +46,13 @@ module.exports.getPlayers = async function (limit) {
     return players;
 };
 
+// Fetch All Winners
+module.exports.getWinners = async function (limit) 
+{
+    let players = await player.find().sort( { score: -1 } ).limit(limit);
+    return players;
+};
+
 module.exports.updatePlayer = async function (data) 
 {
     await player.findOneAndUpdate(
