@@ -85,8 +85,9 @@ module.exports = function(config) {
   coverageIstanbulReporter: {
     reports: [ 'html','text-summary' ],
     fixWebpackSourcePaths: true,
+    combineBrowserReports: true,
     dir: path.join(__dirname, 'coverage'),
-    verbose: false,
+    verbose: true,
     // Omit files with no statements, no functions and no branches from the report
     skipFilesWithNoCoverage: true
   },

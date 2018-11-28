@@ -57,11 +57,9 @@ app.get('/players', function (req, res,next)
     logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' })
     Player.getPlayers(1000).then(players=> {
-        logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         logger.debug("Players: ");
         logger.debug(players)
         res.send(players)
-        logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
     }).catch(error=>{
         logger.debug("**************************");
         logger.error(err);

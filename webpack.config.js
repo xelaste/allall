@@ -101,6 +101,12 @@ let conf = {
     compress: true,
     hot: true,
     port: 9001
-  }
+  },
+  externals: {
+    // global app config object
+    config: JSON.stringify({
+        apiUrl: 'http://localhost:3000'
+    })
+}
 };
 module.exports = (env, argv) => conf;
