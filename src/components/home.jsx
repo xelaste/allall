@@ -13,13 +13,11 @@ import React from 'react';
 import HomeForm from './home_form'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as playerActions from "../actions/player";
+import { playerActions } from "../actions/player";
 import * as gameActions from "../actions/bullscowsgame";
 import { getFormValues, isPristine, isSubmitting, reset, submit } from 'redux-form';
-import { SubmissionError } from 'redux-form';
 import Game from './game';
 import { generateSecretArray } from '../util/secretGenerator';
-import $ from 'jquery';
 
 function mapStateToProps(state) {
   return {
@@ -31,29 +29,6 @@ function mapStateToProps(state) {
     error: state.player.get('error'),
     gamingNow: state.game.get('gamingNow')
   }
-}
-
-function updateCurrentPlayer(props, player) {
-  props.dispatch(playerActions.updateCurentPlayer(player));
-}
-
-function PlayersList(ctx) {
-
-  return <div className="h-100">
-    <h4>Player's List</h4>
-    <div className="h-100 w-50" style={{ overflowY: 'auto' }}>
-      <ul className="list-group">
-        {ctx.props.players.map((item, idx) => (
-          <li key={idx} className="list-group-item d-flex justify-content-between mx-0">
-            <span className="d-flex justify-content-end">
-              <input className="mt-2" id={'radio_player_' + idx} name="player" type="radio" onClick={() => updateCurrentPlayer(ctx.props, item.get("name"))} onChange={() => { }} checked={(item.get("name") === ctx.props.currentPlayer)} />
-              <span className="px-1" >{item.get("name")}</span>
-            </span>
-            <span className="badge-primary badge-pill">{item.get("score")}</span></li>
-        ))}
-      </ul>
-    </div>
-  </div>
 }
 
 
@@ -68,53 +43,39 @@ class Home extends React.Component {
     error: PropTypes.string
   };
 
+  playersList() 
+  {
+    return <div className="h-100">
+      <h4>Player's List</h4>
+      <div className="h-100 w-50" style={{ overflowY: 'auto' }}>
+        <ul className="list-group">
+          {this.props.players.map((item, idx) => (
+            <li key={idx} className="list-group-item d-flex justify-content-between mx-0">
+              <span className="d-flex justify-content-end">
+                <input className="mt-2" id={'radio_player_' + idx} name="player" type="radio" 
+                  onClick={() => this.updateCurrentPlayer(item.get("name"))} onChange={() => { }} 
+                  checked={(item.get("name") === this.props.currentPlayer)} />
+                <span className="px-1" >{item.get("name")}</span>
+              </span>
+              <span className="badge-primary badge-pill">{item.get("score")}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  }
+  updateCurrentPlayer(player) {
+    const { dispatch } = this.props;
+    dispatch(playerActions.updateCurrentPlayer(player));
+  }
   componentDidMount() {
-    this.fetchPlayers().then(data => {
-      console.log("Data:", JSON.stringify(data));
-      this.props.dispatch(playerActions.fetchAllPlayers(data));
-    });
-
+    const { dispatch } = this.props;
+    dispatch(playerActions.getAll());
   }
-
-  async  fetchPlayers() {
-    const result = await $.ajax(
-      {
-        type: "GET",
-        url: "/players",
-        dataType: "json",
-        contentType: "application/json"
-      }
-    ).catch(error => { throw "System Error"; });
-    return result;
-  }
-
-  async persistPlayer(player) {
-    const result = await $.ajax(
-      {
-        type: "POST",
-        url: "/players",
-        data: JSON.stringify(player),
-        dataType: "json",
-        contentType: "application/json"
-      }
-    ).catch(error => { throw "System Error"; });
-    return result;
-  }
-
-  async handleSubmit() {
+  handleSubmit(e) 
+  {
     console.log("enter handleSubmit");
-    try {
-      let playerName = this.props.values.playerName;
-      this.props.dispatch(playerActions.addPlayer(playerName));
-      this.persistPlayer({ name: playerName, score: 0 })
-    }
-    catch (error) {
-      throw new SubmissionError({
-        msg: error,
-        _error: error
-      })
-
-    }
+    let playerName = this.props.values.playerName;
+    this.props.dispatch(playerActions.register({ name: playerName, score: 0 }));
     console.log("exit handleSubmit");
   }
   render() {
@@ -124,8 +85,9 @@ class Home extends React.Component {
     else
       return (
         <div className="mt-10 h-100">
-          <HomeForm onSubmit={this.handleSubmit.bind(this)} />
-          <PlayersList props={this.props} />
+          {this.props.error && <div className="mt-10 px-2 col-sm-6 alert alert-danger">{this.props.error}</div>}
+          <HomeForm onSubmit={this.handleSubmit.bind(this)} submitError={this.props.error}/>
+          {this.playersList()} 
           <div className="m-3 panel fixed-bottom">
             <button className="btn btn-primary btn-sm col-md-1 mr-1" type="submit" disabled={this.props.pristine || this.props.submiting}
               type="button"
@@ -133,7 +95,7 @@ class Home extends React.Component {
             >    Submit </button>
             <button className="btn btn-primary btn-sm col-md-1 ml-1"
               type="button" disabled={(this.props.pristine && !this.props.currentPlayer) || this.props.submiting}
-              onClick={() => { this.props.dispatch(reset('homeForm')); updateCurrentPlayer(this.props, "") }}>
+              onClick={() => { this.props.dispatch(reset('homeForm')); this.updateCurrentPlayer("") }}>
               Clear Values
             </button>
             <button className="btn btn-primary btn-sm col-md-1 ml-1"
@@ -142,11 +104,10 @@ class Home extends React.Component {
               Play
             </button>
             <button className="btn btn-primary btn-sm col-md-1 ml-1"
-              type="button" 
-              onClick={() => this.props.dispatch(gameActions.newGame(generateSecretArray(),true))}>
+              type="button"
+              onClick={() => this.props.dispatch(gameActions.newGame(generateSecretArray(), true))}>
               Play Vs Computer
             </button>
-
           </div>
         </div>
       )

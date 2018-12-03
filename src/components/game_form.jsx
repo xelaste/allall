@@ -22,16 +22,17 @@ const GameForm = props => {
     {
         
     }
+    let showSecret = props.vsComputer ||  props.isWin || props.isLost
     return (
         <div className="mb-3">
             {!props.vsComputer && <h4>Player: {props.playerName}</h4>}
             <h4>Secret</h4>
-            {!props.vsComputer && <h4>{props.secret.map(x=>"*")}</h4>}
-            {props.vsComputer && <h4>{props.secret.map(x=>x)}</h4>}
-            {!props.vsComputer && <h4>enter number</h4>}
+            {!showSecret && <h4>{props.secret.map(x=>"*")}</h4>}
+            {showSecret && <h4>{props.secret.map(x=>x)}</h4>}
+            {!showSecret && <h4>enter number</h4>}
             <form onSubmit={handleSubmit} className="form-horizontal">
                 {error && <div className="mt-10 px-0 col-sm-6 alert alert-danger">{error}</div>}
-                {!props.vsComputer &&
+                {!showSecret &&
                 <div className="form-row w-100">
                     <span className="col-md-2 mr-1">
                         <Field

@@ -18,7 +18,6 @@ const HomeForm = props => {
     </form>
   );
 };
-
 export default reduxForm({
   form: 'homeForm',
   onChange: (values, dispatch, props) => {

@@ -1,11 +1,12 @@
 import Immutable from 'immutable';
-import { symbols as playerSymbols } from '../actions/player';
-import $ from 'jquery';
+import {playerConstants} from "../constants/playerConstants";
+import { debug } from 'util';
 
 const EMPTY_LIST = Immutable.fromJS([]);
 const initialState = Immutable.fromJS(
     {
         players: EMPTY_LIST,
+        winners: EMPTY_LIST,
         currentPlayer: '',
         error: ''
     }
@@ -27,24 +28,10 @@ function addPlayer(state, playerName) {
     return state;
 }
 
-function  updatePlayer(player) {
-    const result = $.ajax(
-      {
-        type: "PUT",
-        url: "/players",
-        data: JSON.stringify(player),
-        dataType: "json",
-        contentType: "application/json"
-      }
-    ).catch(error=> {throw "System Error";});
-    return result;
-}
-
 function updatePlayerScore(state, playerName, score) {
     let player = state.get('players').find((player) => player.get('name') == playerName);
     if (player) {
         player = player.set('score', player.get('score') + score);
-        updatePlayer(player);
         let players = state.get('players');
         players = players.filter((o) => o.get('name') !== playerName);
         return state.set('players', players.push(player));
@@ -66,24 +53,36 @@ function updateCurrentPlayer(state, playerName) {
 }
 
 function fetchPlayers(state, data) {
+    debug;
     state = state.update('players',()=>EMPTY_LIST);
     state = state.update('players', (val) => val.push(...data.map(item => Immutable.Map(item))));
     return state;
 }
 
+function fetchWinners(state, data) {
+    debug;
+    state = state.update('winners',()=>EMPTY_LIST);
+    state = state.update('winners', (val) => val.push(...data.map(item => Immutable.Map(item))));
+    return state;
+}
+
 export function reducer(state = initialState, action) {
+    console.log(action.type);
     switch (action.type) {
-        case playerSymbols.fetchPlayersSuccess:
+        case "@@redux-form/CHANGE":
+            return state.set("error","");  
+        case playerConstants.GETALL_SUCCESS:
             return fetchPlayers(state, action.payload);
-
-        case playerSymbols.addPlayer:
+        case playerConstants.GETWINNERS_SUCCESS:    
+            return fetchWinners(state, action.payload);
+        case playerConstants.REGISTER_FAILURE:
+             return state.set("error",action.payload);  
+        case playerConstants.REGISTER_SUCCESS:
             return addPlayer(state, action.payload);
-
-        case playerSymbols.updateScore:
-            return updatePlayerScore(state, action.payload.player, action.payload.score);
-
-        case playerSymbols.updateCurrentPlayer:
-            return updateCurrentPlayer(state, action.payload);
+        case playerConstants.UPDATE_SUCCESS:
+            return updatePlayerScore(state, action.payload.name, action.payload.score);
+        case playerConstants.SET_CURRENT_PLAYER:
+             return updateCurrentPlayer(state, action.payload);
 
         default:
             return state;

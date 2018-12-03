@@ -10,13 +10,13 @@
  */
 import React from 'react';
 import * as gameActions from "../actions/bullscowsgame";
-import * as playerActions from "../actions/player";
 import { connect } from 'react-redux';
 import { getFormValues, isPristine, isSubmitting, reset, submit } from 'redux-form';
 import PropTypes from 'prop-types';
 import GameForm from './game_form';
 import _ from 'underscore';
 import { generateSecretArray } from '../util/secretGenerator';
+import { playerActions } from './../actions/player';
 
 function mapStateToProps(state) {
   return {
@@ -147,7 +147,8 @@ class Game extends React.Component {
           </table>
         </div>
         <div className="col-sm-6" style={{ backgroundColor: "pink" }}>
-          <GameForm vsComputer={this.vsComputer()} secret={this.props.secret} playerName={this.props.currentPlayer} />
+          <GameForm isLost={this.isLost()} isWin={this.isWin()} vsComputer={this.vsComputer()} secret={this.props.secret} playerName={this.props.currentPlayer} />
+
         </div>
         {!this.isWin() && !this.isLost() &&
           <div className="h-100 mt-5">
@@ -162,9 +163,13 @@ class Game extends React.Component {
           onClick={() => {
             let guess = [parseInt(this.props.values.d1), parseInt(this.props.values.d2), parseInt(this.props.values.d3), parseInt(this.props.values.d4)];
             if (_.isEqual(guess, this.props.secret)) {
-              this.props.dispatch(playerActions.updateScore(this.props.currentPlayer, 10 - this.props.results.length));
+              this.props.dispatch(playerActions.updatePlayerScore(this.props.currentPlayer, 10 - this.props.results.length));
             }
             this.props.dispatch(gameActions.play([parseInt(this.props.values.d1), parseInt(this.props.values.d2), parseInt(this.props.values.d3), parseInt(this.props.values.d4)]))
+            this.props.values.d1="";
+            this.props.values.d2="";
+            this.props.values.d3="";
+            this.props.values.d4="";
             resetTimer = true;
           }
           }>

@@ -21,9 +21,17 @@ module.exports.init=databaseInitialize;
 module.exports.createPlayer = async function (newPlayer) 
 {
     let players = db.getCollection("players");
-    players.insert(newPlayer)
     let result = players.findOne({ name: newPlayer.name });
-    return result;
+    if (result == null)
+    {
+        players.insert(newPlayer)
+        return players.findOne({ name: newPlayer.name });
+    }      
+    else
+    {
+        throw 'Player name "' + newPlayer.name + '" is already taken';
+    }
+    
 };
 
 // Fetch All Players
@@ -40,7 +48,7 @@ module.exports.getWinners = async function (limit)
     let players = db.getCollection("players");
     let pview = players.addDynamicView('progeny');
     pview.applySimpleSort('score',true);
-    let result = pview.data().slice(0,limit);
+    let result = pview.data().slice(0,limit).filter(x=>x.score>0);
     return result;
 };
 
@@ -48,7 +56,7 @@ module.exports.updatePlayer = async function (updatedPlayer)
 {
     let players = db.getCollection("players");
     let result = players.findOne({ name: updatedPlayer.name });
-    result.score=updatedPlayer.score;
+    result.score+=updatedPlayer.score;
     await players.update(result);
     return result;
 };

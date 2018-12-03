@@ -1,7 +1,7 @@
 import config from 'config';
 //import { authHeader } from '../_helpers';
 
-export const userService = 
+export const playerService = 
 {
     register,
     getAll,
@@ -20,7 +20,7 @@ function register(player) {
 
     return fetch(`${config.apiUrl}/players`, requestOptions).then(handleResponse);
 }
-function register(player) {
+function update(player) {
     const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

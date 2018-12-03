@@ -1,4 +1,4 @@
-import { createStore, combineReducers ,applyMiddleware } from 'redux';
+import { createStore, combineReducers ,applyMiddleware ,compose } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import {reducer as playerReducer} from './reducers/player';
 import {reducer as bullscowsgameReducer} from './reducers/bullscowsgame';
@@ -16,11 +16,10 @@ const reducer = combineReducers({
 
 const store = createStore(
   reducer, /* preloadedState, */
-  applyMiddleware(
-    thunkMiddleware,
-    loggerMiddleware
-),
-window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  compose (
+    applyMiddleware( thunkMiddleware, loggerMiddleware),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
 window.store = store;
 export default store;

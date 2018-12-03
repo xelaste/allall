@@ -37,7 +37,15 @@ module.exports.createPlayer = async function (data)
     newPlayer.score=data.score;
     newPlayer.username=data.username,
     newPlayer.profileImage='noimage.png';
-    await newPlayer.save();
+    if ( (await player.findOne({ name: data.name })) != null)
+    {
+        await newPlayer.save();
+    }   
+    else
+    {
+        throw 'Player name "' + data.name + '" is already taken';
+    }
+    return newPlayer;
 };
 
 // Fetch All Classes
@@ -49,7 +57,7 @@ module.exports.getPlayers = async function (limit) {
 // Fetch All Winners
 module.exports.getWinners = async function (limit) 
 {
-    let players = await player.find().sort( { score: -1 } ).limit(limit);
+    let players = await player.find({ score: { $gt: 0 } }).sort( { score: -1 } ).limit(limit);
     return players;
 };
 
@@ -58,7 +66,7 @@ module.exports.updatePlayer = async function (data)
     await player.findOneAndUpdate(
         { name: data.name },
         {
-            $set: { "score": data.score }
+            $inc: { "score": data.score }
         },
         {save: true, upsert: true}
     )

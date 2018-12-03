@@ -103,7 +103,8 @@ app.post('/players', function (req, res,next) {
         logger.debug("**************************");
         logger.error(err);
         logger.debug("**************************");
-        next(err)});
+        res.status(500).json({ message: err });
+    });
 });
         
 app.put('/players', function (req, res,next) 
