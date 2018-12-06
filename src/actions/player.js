@@ -22,7 +22,7 @@ function updateCurrentPlayer(playerName) {
 function register(player) 
 {
   return dispatch => {
-    dispatch(request());
+    dispatch(request(player));
     playerService.register(player)
       .then(
         result => {
@@ -74,7 +74,7 @@ function updatePlayerScore(playerName, score)
 {
     let player = {name:playerName,score:score}
     return dispatch => {
-    dispatch(request());
+    dispatch(request(player));
     playerService.update(player).then(
           result => {
             dispatch(success(result));

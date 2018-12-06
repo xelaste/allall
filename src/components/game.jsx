@@ -29,41 +29,41 @@ function mapStateToProps(state) {
     values: getFormValues('gameForm')(state)
   }
 }
-let resetTimer = false;
 function withTimer(Component) {
   return class Timer extends React.Component {
     constructor(props) {
       super(props);
       this.state = { ticks: 0, start: (new Date()).getTime(),period:props.period };
+      this.reset = this.reset.bind(this);
+      if (props.subscribe)
+      {
+        props.subscribe (this.reset);
+      }
     }
 
-    componentDidMount() {
+    reset ()
+    {
       this.state = { ticks: 0, start: (new Date()).getTime(),period:this.state.period };
-      this.timer = setInterval(this.tick, 100);
+    }
+    componentDidMount() {
+      this.reset();
+      this.timer = setInterval(this.tick, 1000);
     }
 
     componentWillUnmount() {
-      this.state = { ticks: 0, start: (new Date()).getTime(),period:this.state.period };
+      this.reset();
       clearInterval(this.timer);
     }
 
     tick = () => {
-      if (resetTimer) {
-        this.setState(oldState => ({ ticks: 0, start: (new Date()).getTime(),period:oldState.period }));
-        resetTimer = false;
-      }
-      else {
         let ticks = Math.floor(((new Date()).getTime() - this.state.start) / 1000)
         if (ticks != this.state.ticks) {
           this.setState(state => ({ ticks: ticks }));
           if (this.state.ticks > 0 && this.state.ticks % this.state.period == 0) {
             store.dispatch(gameActions.skip());
           }
-        }
       }
-
     };
-
     render() {
       return (
         <Component {...this.props} ticks={this.state.ticks} />
@@ -92,7 +92,18 @@ class Game extends React.Component {
     results: PropTypes.array,
     vsComputer: PropTypes.bool
   };
+  constructor(props) 
+  {
+    super(props);
+    this.subscribeToTimer = this.subscribeToTimer.bind(this);
+  }
 
+  resetTimer=null;
+
+  subscribeToTimer( handler )
+  {
+    this.resetTimer = handler;
+  }  
   isWin() {
     return this.props.results.filter(item => parseInt(item.get("matches")) === 4).length > 0
   }
@@ -114,7 +125,7 @@ class Game extends React.Component {
     return guesses.slice(0, 10);
   }
   restart() {
-    resetTimer = true;
+    this.resetTimer ();
     this.props.dispatch(gameActions.newGame(generateSecretArray(),this.vsComputer()));
     this.props.dispatch(reset('gameForm'));
   }
@@ -152,7 +163,7 @@ class Game extends React.Component {
         </div>
         {!this.isWin() && !this.isLost() &&
           <div className="h-100 mt-5">
-            <Clock ticks={0} period={this.vsComputer()?2:30}/>
+            <Clock subscribe={this.subscribeToTimer} ticks={0} period={this.vsComputer()?2:30}/>
           </div>
         }
       </div>
@@ -170,7 +181,7 @@ class Game extends React.Component {
             this.props.values.d2="";
             this.props.values.d3="";
             this.props.values.d4="";
-            resetTimer = true;
+            this.resetTimer ();
           }
           }>
           Check

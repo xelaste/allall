@@ -8,6 +8,7 @@ const nodeEnv = devBuild ? 'development' : 'production';
 let conf = {
   mode:nodeEnv,
   context: path.resolve(__dirname, 'src'), // `__dirname` is root of project and `src` is source
+  devtool:'inline-source-map',
   entry: {
     app: [
       './main.jsx',

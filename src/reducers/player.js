@@ -1,6 +1,5 @@
 import Immutable from 'immutable';
 import {playerConstants} from "../constants/playerConstants";
-import { debug } from 'util';
 
 const EMPTY_LIST = Immutable.fromJS([]);
 const initialState = Immutable.fromJS(
@@ -53,7 +52,6 @@ function updateCurrentPlayer(state, playerName) {
 }
 
 function fetchPlayers(state, data) {
-    debug;
     state = state.update('players',()=>EMPTY_LIST);
     state = state.update('players', (val) => val.push(...data.map(item => Immutable.Map(item))));
     return state;
@@ -67,7 +65,6 @@ function fetchWinners(state, data) {
 }
 
 export function reducer(state = initialState, action) {
-    console.log(action.type);
     switch (action.type) {
         case "@@redux-form/CHANGE":
             return state.set("error","");  

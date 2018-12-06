@@ -38,6 +38,12 @@ var webpackConfig = {
         
         { test: /\.html$/, loader: 'html-loader' }
     ]
+},
+externals: {
+  // global app config object
+  config: JSON.stringify({
+      apiUrl: 'http://localhost:3000'
+  })
 }
 };
 webpackConfig.devtool = 'inline-source-map';
@@ -87,7 +93,7 @@ module.exports = function(config) {
     fixWebpackSourcePaths: true,
     combineBrowserReports: true,
     dir: path.join(__dirname, 'coverage'),
-    verbose: true,
+    verbose: false,
     // Omit files with no statements, no functions and no branches from the report
     skipFilesWithNoCoverage: true
   },
@@ -121,6 +127,9 @@ module.exports = function(config) {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
+    
+    //
+    //browsers: ['Chrome'],
     
     browsers: ['ChromeHeadless'],
     customLaunchers: {

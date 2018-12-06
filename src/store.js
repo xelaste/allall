@@ -4,8 +4,11 @@ import {reducer as playerReducer} from './reducers/player';
 import {reducer as bullscowsgameReducer} from './reducers/bullscowsgame';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-
-const loggerMiddleware = createLogger();
+const loggerMiddleware = createLogger(
+  {
+    collapsed:true,
+  } 
+);
 
 
 const reducer = combineReducers({

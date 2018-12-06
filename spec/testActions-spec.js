@@ -1,20 +1,24 @@
-import {symbols,addPlayer,updateScore} from "../src/actions/player" 
-import { debug } from "util";
+import {playerActions} from "../src/actions/player" 
+import { playerConstants } from "../src//constants/playerConstants";
 describe('Actions tests', function() 
 {
     it('it should be xxx player added', function() 
     {
-        let action = addPlayer("xxx");
-        expect(action.payload).toEqual("xxx");
-        expect(action.type).toEqual(symbols.addPlayer);
+        let actions = [];
+        let action = playerActions.register({name:"xxx",score:0});
+        action((result)=>{actions.push(result)});
+        expect(actions[0].payload.name).toEqual("xxx");
+        expect(actions[0].type).toEqual(playerConstants.REGISTER_REQUEST);
     });
 
     it('it should be yyy player scored', function() 
     {
-        let action = updateScore("yyy",10)
-        expect(action.payload.player).toEqual("yyy");
-        expect(action.type).toEqual(symbols.updateScore);
+        let actions=[];
+        let actionF = playerActions.updatePlayerScore("yyy",10)
+        actionF((result)=>{actions.push(result);});
+        console.log(actions);
+        expect(actions[0].payload.name).toEqual("yyy");
+        expect(actions[0].type).toEqual(playerConstants.UPDATE_REQUEST);
     });
-
   });
   
