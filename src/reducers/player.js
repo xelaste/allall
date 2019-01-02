@@ -58,7 +58,6 @@ function fetchPlayers(state, data) {
 }
 
 function fetchWinners(state, data) {
-    debug;
     state = state.update('winners',()=>EMPTY_LIST);
     state = state.update('winners', (val) => val.push(...data.map(item => Immutable.Map(item))));
     return state;

@@ -29,7 +29,9 @@ function register(player)
                 dispatch(success(result));
                 dispatch(getAll());
                 },
-        error => dispatch(failure(error.toString()))
+        error => {
+                   dispatch(failure(error.toString()))
+                }
       );
   };
 

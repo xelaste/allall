@@ -73,7 +73,26 @@ function withTimer(Component) {
 }
 class Clock extends React.Component {
   render() {
-    return <p><span>Elapsed Time:</span>{this.props.period - this.props.ticks % this.props.period}</p>
+    let percent = Math.floor(100 * ((this.props.ticks % this.props.period)/this.props.period));
+    console.log(percent);
+    let style={};
+    style.width=percent + "%";
+    //style.height="1.5em";
+    //style.position="relative";
+    //style.top="-100%";
+    //style.opacity="0.8";
+    //style.backgroundColor="blue"
+    /*
+    return <div  style={{height: "1.5em", backgroundColor:"powderblue" }}>
+      <strong><span className="pl-3">Elapsed Time:</span>{this.props.period - this.props.ticks % this.props.period}</strong>
+      <div style={style}>
+      </div>
+    </div>
+    */
+   return <div className="progress" style={{height: "1.5em"}}>
+            <div className="progress-bar" style={style}><strong><span className="pl-3">Elapsed Time:</span>{this.props.period - this.props.ticks % this.props.period}</strong></div>
+          </div>
+  
   }
 }
 
@@ -125,22 +144,28 @@ class Game extends React.Component {
     return guesses.slice(0, 10);
   }
   restart() {
-    this.resetTimer ();
+    if (this.resetTimer)
+    {
+        this.resetTimer();
+    } 
     this.props.dispatch(gameActions.newGame(generateSecretArray(),this.vsComputer()));
     this.props.dispatch(reset('gameForm'));
   }
 
   render() {
-    return (<div className="panel h-100">
+    return (<div className="panel h-100 p-0 m-0">
+    < div className="row m-1">
+        {!this.vsComputer() && <h4>Player: {this.props.currentPlayer}</h4>}
+     </div> 
       {this.isWin() && <div className="alert alert-success w-25">Winner</div>}
       {this.isLost() && <div className="alert alert-danger w-25">Game is lost</div>}
-      < div className="m-1 row w-50">
-        <div className="col-sm-6" style={{ backgroundColor: 'yellow' }}>
-          <table className="table table-striped table-sm">
+      < div className="row w-25">
+        <div className="col-sm-7 pr-1">
+          <table style={{ backgroundColor: 'yellow'}} className="h-100 table table-striped table-sm">
             <thead>
               <tr>
                 <th >#</th>
-                <th >guessed</th>
+                <th >Guess</th>
                 <th >Cows</th>
                 <th >Bulls</th>
               </tr>
@@ -157,17 +182,15 @@ class Game extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className="col-sm-6" style={{ backgroundColor: "pink" }}>
+        <div className="col-sm-5" style={{ backgroundColor: "pink" }}>
           <GameForm isLost={this.isLost()} isWin={this.isWin()} vsComputer={this.vsComputer()} secret={this.props.secret} playerName={this.props.currentPlayer} />
-
         </div>
-        {!this.isWin() && !this.isLost() &&
-          <div className="h-100 mt-5">
-            <Clock subscribe={this.subscribeToTimer} ticks={0} period={this.vsComputer()?2:30}/>
-          </div>
-        }
       </div>
-
+      {!this.isWin() && !this.isLost() &&
+        <div className="w-25 mt-3 pr-3">
+          <Clock subscribe={this.subscribeToTimer} ticks={0} period={this.vsComputer()?2:30}/>
+        </div>
+      }
       <div className="panel fixed-bottom">
         <button className="btn btn-primary btn-sm col-md-1 ml-1"
           type="button" disabled={this.vsComputer() || !this.props.values || this.props.values && !(parseInt(this.props.values.d1) && parseInt(this.props.values.d2) && parseInt(this.props.values.d3) && parseInt(this.props.values.d4))}

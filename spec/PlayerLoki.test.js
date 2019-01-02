@@ -34,14 +34,17 @@ test('add new player aa', () => {
     });
   });
 
-  test('Update the player', () => {
-    players.createPlayer({name: "bb" ,    score: 0});
-    var tyrfing = collection.findOne({'name': 'bb'});
+  test('Update the player', async () => {
+    let tyrfing = {name: "bb" ,   score: 0};
+    players.createPlayer(tyrfing);
     console.log(tyrfing.score);
     let score = tyrfing.score
-    tyrfing.score++;
-    players.updatePlayer(tyrfing);
+    score++;
+    await players.updatePlayer({name: "bb" ,   score: score});
     tyrfing = collection.findOne({'name': 'bb'});
-    expect(tyrfing.score).toEqual(score + 1 );
+    console.log("@=================================");
+    console.log(tyrfing);
+    console.log("==================================");
+    expect(tyrfing.score).toEqual(score);
     console.log(tyrfing);
   });

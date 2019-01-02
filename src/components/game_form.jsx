@@ -1,5 +1,7 @@
 import React from 'react';
 import {formValues,Field, reduxForm } from 'redux-form';
+
+
 const GameForm = props => {
     const { error, handleSubmit } = props;
     const digit = (value ,previousValue ,allValues ,previousAllValues) => 
@@ -25,16 +27,13 @@ const GameForm = props => {
     let showSecret = props.vsComputer ||  props.isWin || props.isLost
     return (
         <div className="mb-3">
-            {!props.vsComputer && <h4>Player: {props.playerName}</h4>}
-            <h4>Secret</h4>
-            {!showSecret && <h4>{props.secret.map(x=>"*")}</h4>}
-            {showSecret && <h4>{props.secret.map(x=>x)}</h4>}
-            {!showSecret && <h4>enter number</h4>}
+            {showSecret && <h4>Secret: {props.secret}</h4>}
+            {!showSecret && <h4>Enter Number</h4>}
             <form onSubmit={handleSubmit} className="form-horizontal">
                 {error && <div className="mt-10 px-0 col-sm-6 alert alert-danger">{error}</div>}
                 {!showSecret &&
-                <div className="form-row w-100">
-                    <span className="col-md-2 mr-1">
+                <div className="form-row w-100 p-2">
+                    <span className="digitSpan mr-1">
                         <Field
                             name="d1"
                             component="input"
@@ -45,7 +44,7 @@ const GameForm = props => {
                             onChange={onChange}
                         />
                     </span>
-                    <span className="col-md-2 mr-1">
+                    <span className="digitSpan mr-1">
                         <Field
                             name="d2"
                             component="input"
@@ -55,7 +54,7 @@ const GameForm = props => {
                             normalize={digit}
                         />
                     </span>
-                    <span className="col-md-2 mr-1">
+                    <span className="digitSpan mr-1">
                         <Field
                             name="d3"
                             component="input"
@@ -65,7 +64,7 @@ const GameForm = props => {
                             normalize={digit}
                         />
                     </span>
-                    <span className="col-md-2 mr-1">
+                    <span className="digitSpan mr-1">
                         <Field
                             name="d4"
                             component="input"

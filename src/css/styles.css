@@ -2,6 +2,11 @@ html , body,main{
   height: 75%;
 }
 
+.digitSpan{
+  display: inline-block;
+  width: 2em;
+}
+
 .panel {
   padding:10px;
   margin: 10px;

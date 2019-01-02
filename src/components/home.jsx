@@ -19,6 +19,7 @@ import { getFormValues, isPristine, isSubmitting, reset, submit } from 'redux-fo
 import Game from './game';
 import { generateSecretArray } from '../util/secretGenerator';
 
+
 function mapStateToProps(state) {
   return {
     players: [...state.player.get('players')],
