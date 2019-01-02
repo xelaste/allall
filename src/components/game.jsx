@@ -77,19 +77,7 @@ class Clock extends React.Component {
     console.log(percent);
     let style={};
     style.width=percent + "%";
-    //style.height="1.5em";
-    //style.position="relative";
-    //style.top="-100%";
-    //style.opacity="0.8";
-    //style.backgroundColor="blue"
-    /*
-    return <div  style={{height: "1.5em", backgroundColor:"powderblue" }}>
-      <strong><span className="pl-3">Elapsed Time:</span>{this.props.period - this.props.ticks % this.props.period}</strong>
-      <div style={style}>
-      </div>
-    </div>
-    */
-   return <div className="progress" style={{height: "1.5em"}}>
+    return <div className="progress" style={{height: "1.5em"}}>
             <div className="progress-bar" style={style}><strong><span className="pl-3">Elapsed Time:</span>{this.props.period - this.props.ticks % this.props.period}</strong></div>
           </div>
   
