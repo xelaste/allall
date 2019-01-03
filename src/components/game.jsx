@@ -147,8 +147,8 @@ class Game extends React.Component {
      </div> 
       {this.isWin() && <div className="alert alert-success w-25">Winner</div>}
       {this.isLost() && <div className="alert alert-danger w-25">Game is lost</div>}
-      < div className="row w-25">
-        <div className="col-sm-7 pr-1">
+      < div className="row w-50">
+        <div className="col-sm-6 pr-1">
           <table style={{ backgroundColor: 'yellow'}} className="h-100 table table-striped table-sm">
             <thead>
               <tr>
@@ -170,7 +170,7 @@ class Game extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className="col-sm-5" style={{ backgroundColor: "pink" }}>
+        <div className="col-sm-4" style={{ backgroundColor: "pink" }}>
           <GameForm isLost={this.isLost()} isWin={this.isWin()} vsComputer={this.vsComputer()} secret={this.props.secret} playerName={this.props.currentPlayer} />
         </div>
       </div>
