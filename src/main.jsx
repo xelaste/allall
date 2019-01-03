@@ -5,5 +5,5 @@ import  "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import Routes from './routes';
 
 
-ReactDOM.render(<Routes/>, document.querySelector('main'));
+ReactDOM.render(<Routes/>, document.getElementById('main'));
 

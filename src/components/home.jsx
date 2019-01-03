@@ -46,9 +46,9 @@ class Home extends React.Component {
 
   playersList() 
   {
-    return <div className="h-100">
+    return <div className="h-75">
       <h4>Player's List</h4>
-      <div className="h-100 w-50" style={{ overflowY: 'auto' }}>
+      <div className="h-75 w-50 table-wrapper-scroll-y">
         <ul className="list-group">
           {this.props.players.map((item, idx) => (
             <li key={idx} className="list-group-item d-flex justify-content-between mx-0">
@@ -89,7 +89,7 @@ class Home extends React.Component {
           {this.props.error && <div className="mt-10 px-2 col-sm-6 alert alert-danger">{this.props.error}</div>}
           <HomeForm onSubmit={this.handleSubmit.bind(this)} submitError={this.props.error}/>
           {this.playersList()} 
-          <div className="m-3 panel fixed-bottom">
+          <div className="m-3">
             <button className="btn btn-primary btn-sm col-md-1 mr-1" type="submit" disabled={this.props.pristine || this.props.submiting}
               type="button"
               onClick={() => this.props.dispatch(submit('homeForm'))}

@@ -1,5 +1,13 @@
-html , body,main{
-  height: 75%;
+
+html,body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+#main{
+  height: 100%;
+  background-color: palegreen;
 }
 
 .digitSpan{
