@@ -1,9 +1,6 @@
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/bullscows', { useMongoClient: true });
-
-var db = mongoose.connection;
-
 // User Schema
 var PlayerSchema = mongoose.Schema({
     loginname: {
@@ -37,15 +34,16 @@ module.exports.createPlayer = async function (data)
     newPlayer.score=data.score;
     newPlayer.username=data.username,
     newPlayer.profileImage='noimage.png';
-    if ( (await player.findOne({ name: data.name })) != null)
+    if ( (await player.findOne({ name: data.name })) === null)
     {
         await newPlayer.save();
+        return await player.findOne({ name: newPlayer.name });
     }   
     else
     {
         throw 'Player name "' + data.name + '" is already taken';
     }
-    return newPlayer;
+    
 };
 
 // Fetch All Classes

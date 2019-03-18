@@ -55,7 +55,6 @@ export default class AutoPlay {
             heap = this.prune(heap, filter, num);
             i++;
         }
-        console.log(i + " @####@")
     }
 }
 

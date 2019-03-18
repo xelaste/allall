@@ -31,7 +31,7 @@ function mapStateToProps(state) {
   }
 }
 
-// Tic Tac Toe Game
+// Cows Bulls Game
 class Highscore extends React.Component {
   static propTypes = {
     players: PropTypes.array,

@@ -22,7 +22,7 @@ module.exports.createPlayer = async function (newPlayer)
 {
     let players = db.getCollection("players");
     let result = players.findOne({ name: newPlayer.name });
-    if (result == null)
+    if (result === null)
     {
         players.insert(newPlayer)
         return players.findOne({ name: newPlayer.name });

@@ -46,12 +46,13 @@ class Home extends React.Component {
 
   playersList() 
   {
-    return <div className="h-75">
+    return <div className="h-75" >
       <h4>Player's List</h4>
-      <div className="h-75 w-50 table-wrapper-scroll-y">
+      <div className="h-75 w-50 overflow-auto" >
         <ul className="list-group">
-          {this.props.players.map((item, idx) => (
-            <li key={idx} className="list-group-item d-flex justify-content-between mx-0">
+          {this.props.players.map((item, idx) => {
+            console.log(item);
+            return <li key={idx} className="list-group-item d-flex justify-content-between mx-0">
               <span className="d-flex justify-content-end">
                 <input className="mt-2" id={'radio_player_' + idx} name="player" type="radio" 
                   onClick={() => this.updateCurrentPlayer(item.get("name"))} onChange={() => { }} 
@@ -59,7 +60,7 @@ class Home extends React.Component {
                 <span className="px-1" >{item.get("name")}</span>
               </span>
               <span className="badge-primary badge-pill">{item.get("score")}</span></li>
-          ))}
+          })}
         </ul>
       </div>
     </div>
@@ -88,7 +89,9 @@ class Home extends React.Component {
         <div className="mt-10 h-100">
           {this.props.error && <div className="mt-10 px-2 col-sm-6 alert alert-danger">{this.props.error}</div>}
           <HomeForm onSubmit={this.handleSubmit.bind(this)} submitError={this.props.error}/>
-          {this.playersList()} 
+          {
+            this.playersList()
+          }
           <div className="m-3">
             <button className="btn btn-primary btn-sm col-md-1 mr-1" type="submit" disabled={this.props.pristine || this.props.submiting}
               type="button"

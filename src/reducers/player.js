@@ -15,15 +15,8 @@ export default function (state = initialState, action) {
     return reducer(state, action);
 }
 
-function addPlayer(state, playerName) {
-    let player = Immutable.Map({ name: playerName, score: 0 });
-    if (isNewPlayer(state, playerName)==true) 
-    {
-        state = state.update('players', (val) => val.push(player));
-    } else {
-        state = state.update('error', () => "Player exists already");
-        throw state.get("error");
-    }
+function addPlayer(state) 
+{
     return state;
 }
 
