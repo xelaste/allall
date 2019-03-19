@@ -51,7 +51,6 @@ class Home extends React.Component {
       <div className="h-75 w-50 overflow-auto" >
         <ul className="list-group">
           {this.props.players.map((item, idx) => {
-            console.log(item);
             return <li key={idx} className="list-group-item d-flex justify-content-between mx-0">
               <span className="d-flex justify-content-end">
                 <input className="mt-2" id={'radio_player_' + idx} name="player" type="radio" 

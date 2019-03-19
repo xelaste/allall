@@ -64,10 +64,13 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "bootstrap": "^4.3.1",
+    "ecdsa-sig-formatter": "^1.0.11",
     "express": "^4.16.2",
     "immutable": "^3.8.2",
     "jquery": "^3.2.1",
+    "jws": "^3.2.2",
     "mongodb": "^2.2.35",
+    "mongodb-stitch-browser-sdk": "^4.3.2",
     "mongoose": "^4.1.8",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
