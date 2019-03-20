@@ -64,13 +64,10 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "bootstrap": "^4.3.1",
-    "ecdsa-sig-formatter": "^1.0.11",
     "express": "^4.16.2",
     "immutable": "^3.8.2",
     "jquery": "^3.2.1",
-    "jws": "^3.2.2",
     "mongodb": "^2.2.35",
-    "mongodb-stitch-browser-sdk": "^4.3.2",
     "mongoose": "^4.1.8",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
@@ -83,7 +80,9 @@
     "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "underscore": "^1.8.3",
-    "winston": "^3.0.0"
+    "winston": "^3.2.1"
   }
 }
