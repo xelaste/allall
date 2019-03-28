@@ -1,4 +1,5 @@
 const loki = require("lokijs");
+
 var db = new loki('quickstart.db', {
     autoload: true,
     autoloadCallback : databaseInitialize,

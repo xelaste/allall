@@ -4,7 +4,7 @@ import { Link, IndexLink } from 'react-router';
 export default class Game extends React.Component {
   render() {
     return (
-      <div className="h-100 panel m-2">
+      <div style={{height:"80%"}} className="panel m-2">
         <div><h1>Bulls and Cows</h1></div>
         <div className="panel-body h-100">
           <nav className="mb-1 nav nav-pills">

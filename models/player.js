@@ -1,8 +1,9 @@
-if (process.env.DB_TYPE_MONGO)
+switch (process.env.DB_TYPE)
 {
-    module.exports = require ("./playerMongo");
-}
-else
-{
-    module.exports = require ("./playerLoki");
+    case "MONGO": module.exports = require ("./playerMongo");
+                  break;
+    case "STITCH": module.exports = require ("./playerStitch");
+                   break;
+    default:
+        module.exports = require ("./playerLoki");
 }

@@ -64,6 +64,7 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "bootstrap": "^4.3.1",
+    "ejson": "^2.1.2",
     "express": "^4.16.2",
     "immutable": "^3.8.2",
     "jquery": "^3.2.1",

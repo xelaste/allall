@@ -46,7 +46,7 @@ class Home extends React.Component {
 
   playersList() 
   {
-    return <div className="h-75" >
+    return <div className="h-100" >
       <h4>Player's List</h4>
       <div className="h-75 w-50 overflow-auto" >
         <ul className="list-group">
@@ -85,13 +85,15 @@ class Home extends React.Component {
     }
     else
       return (
-        <div className="mt-10 h-100">
+        <div className="mt-10 h-75">
           {this.props.error && <div className="mt-10 px-2 col-sm-6 alert alert-danger">{this.props.error}</div>}
           <HomeForm onSubmit={this.handleSubmit.bind(this)} submitError={this.props.error}/>
           {
             this.playersList()
           }
-          <div className="m-3">
+          <div className="m-3 h-25">
+            <div className="h-75"></div>
+            <div>
             <button className="btn btn-primary btn-sm col-md-1 mr-1" type="submit" disabled={this.props.pristine || this.props.submiting}
               type="button"
               onClick={() => this.props.dispatch(submit('homeForm'))}
@@ -111,6 +113,7 @@ class Home extends React.Component {
               onClick={() => this.props.dispatch(gameActions.newGame(generateSecretArray(), true))}>
               Play Vs Computer
             </button>
+            </div>
           </div>
         </div>
       )
