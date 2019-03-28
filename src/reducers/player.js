@@ -41,7 +41,7 @@ function updateCurrentPlayer(state, playerName) {
             state = addPlayer(state, playerName);
         }
     }
-    return state.set('currentPlayer', playerName)
+    return state.set('error','').set('currentPlayer', playerName)
 }
 
 function fetchPlayers(state, data) {

@@ -100,7 +100,7 @@ class Home extends React.Component {
             >    Submit </button>
             <button className="btn btn-primary btn-sm col-md-1 ml-1"
               type="button" disabled={(this.props.pristine && !this.props.currentPlayer) || this.props.submiting}
-              onClick={() => { this.props.dispatch(reset('homeForm')); this.updateCurrentPlayer("") }}>
+              onClick={() => { this.props.dispatch(reset('homeForm')); this.updateCurrentPlayer("");}}>
               Clear Values
             </button>
             <button className="btn btn-primary btn-sm col-md-1 ml-1"

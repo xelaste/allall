@@ -22,5 +22,6 @@ export default reduxForm({
   form: 'homeForm',
   onChange: (values, dispatch, props) => {
     if (props.error) dispatch(clearSubmitErrors('homeForm'));
-  } // a unique identifier for this form
+  }
+  
 })(HomeForm);
