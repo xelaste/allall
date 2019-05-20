@@ -1,6 +1,7 @@
 const winston = require('winston')
-const { format,loggers} = require('winston');
+const { format} = require('winston');
 const { combine, timestamp, label, prettyPrint,colorize } = format;
+const container = new Map()
 console.log("**********************");
 console.log(process.env.LOG_LEVEL);
 console.log("**********************");
@@ -14,33 +15,74 @@ else
 }
 
 module.exports = winston.createLogger({
-    level: winston.level,
-    format: combine(
-        colorize({all:true}),
-        timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss'
-        }),
-       //
-        // The simple format outputs
-        // `${level}: ${message} ${[Object with everything else]}`
-        //
-        
-       format.splat(),
-       //format.simple(),
-        //
-        // Alternatively you could use this custom printf format if you
-        // want to control where the timestamp comes in your final message.
-        // Try replacing `format.simple()` above with this:
-        //
-       //format.printf(info => `${info.timestamp} ${info.level.toUpperCase()}:${info.message}`),
-        format.printf(info => `${info.level} ${info.timestamp} ${info.message}`),
-        
-      ),
-    transports: [
+  level: winston.level,
+  format: combine(
+      colorize({all:true}),
+      timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss'
+      }),
+     //
+      // The simple format outputs
+      // `${level}: ${message} ${[Object with everything else]}`
       //
-      // - Write to all logs with level `info` and below to `combined.log` 
-      // - Write all logs error (and below) to `error.log`.
+      
+     format.splat(),
+     //format.simple(),
       //
-      new winston.transports.Console()
-    ]
-  });
+      // Alternatively you could use this custom printf format if you
+      // want to control where the timestamp comes in your final message.
+      // Try replacing `format.simple()` above with this:
+      //
+     //format.printf(info => `${info.timestamp} ${info.level.toUpperCase()}:${info.message}`),
+      format.printf(info => `${info.level} ${info.label} ${info.timestamp} ${info.message}`),
+      
+    ),
+  transports: [
+    //
+    // - Write to all logs with level `info` and below to `combined.log` 
+    // - Write all logs error (and below) to `error.log`.
+    //
+    new winston.transports.Console()
+  ]
+});
+
+
+module.exports.createLogger = function (name)
+{
+  if (!container.get(name))
+  {
+    container.set(name, winston.createLogger({
+      level: winston.level,
+      format: combine(
+          colorize({all:true}),
+          label({ label: name }),
+          timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss'
+          }),
+          
+         //
+          // The simple format outputs
+          // `${level}: ${message} ${[Object with everything else]}`
+          //
+          
+         format.splat(),
+         //format.simple(),
+          //
+          // Alternatively you could use this custom printf format if you
+          // want to control where the timestamp comes in your final message.
+          // Try replacing `format.simple()` above with this:
+          //
+         //format.printf(info => `${info.timestamp} ${info.level.toUpperCase()}:${info.message}`),
+          format.printf(info => `${info.level} [${info.label}] ${info.timestamp} ${info.message}`),
+        ),
+      transports: [
+        //
+        // - Write to all logs with level `info` and below to `combined.log` 
+        // - Write all logs error (and below) to `error.log`.
+        //
+        new winston.transports.Console()
+      ]
+    }));
+  }
+  return container.get(name);  
+}

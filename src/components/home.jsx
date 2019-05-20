@@ -10,7 +10,6 @@
 
 
 import React from 'react';
-import HomeForm from './home_form'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { playerActions } from "../actions/player";
@@ -87,20 +86,13 @@ class Home extends React.Component {
       return (
         <div className="mt-10 h-75">
           {this.props.error && <div className="mt-10 px-2 col-sm-6 alert alert-danger">{this.props.error}</div>}
-          <HomeForm onSubmit={this.handleSubmit.bind(this)} submitError={this.props.error}/>
-          {
-            this.playersList()
-          }
+          {this.playersList()}
           <div className="m-3 h-25">
             <div className="h-75"></div>
             <div>
-            <button className="btn btn-primary btn-sm col-md-1 mr-1" type="submit" disabled={this.props.pristine || this.props.submiting}
-              type="button"
-              onClick={() => this.props.dispatch(submit('homeForm'))}
-            >    Submit </button>
             <button className="btn btn-primary btn-sm col-md-1 ml-1"
               type="button" disabled={(this.props.pristine && !this.props.currentPlayer) || this.props.submiting}
-              onClick={() => { this.props.dispatch(reset('homeForm')); this.updateCurrentPlayer("");}}>
+              onClick={() => { this.updateCurrentPlayer("");}}>
               Clear Values
             </button>
             <button className="btn btn-primary btn-sm col-md-1 ml-1"

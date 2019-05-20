@@ -21,6 +21,7 @@ let conf = {
   output: {
     filename: '[name]-bundle.js',
     path: path.join(__dirname, '/dist'),
+    publicPath: '/'
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -55,7 +56,7 @@ let conf = {
         options: {
           babelrc: false,
           presets: ['es2015'],
-          plugins: ["transform-class-properties"]
+          plugins: ["transform-class-properties","transform-object-rest-spread"]
         }
       },
       {
@@ -71,7 +72,7 @@ let conf = {
             loader: 'babel-loader',
             options: {
               babelrc: false,
-              plugins: ["transform-class-properties"],
+              plugins: ["transform-class-properties","transform-object-rest-spread"],
               presets: [
                 ['es2015', { modules: false }],
                 'react',

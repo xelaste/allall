@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import {playerConstants} from "../constants/playerConstants";
 
+
 const EMPTY_LIST = Immutable.fromJS([]);
 const initialState = Immutable.fromJS(
     {
@@ -41,7 +42,7 @@ function updateCurrentPlayer(state, playerName) {
             state = addPlayer(state, playerName);
         }
     }
-    return state.set('error','').set('currentPlayer', playerName)
+    return state.set('currentPlayer', playerName)
 }
 
 function fetchPlayers(state, data) {
@@ -59,6 +60,9 @@ function fetchWinners(state, data) {
 export function reducer(state = initialState, action) {
     switch (action.type) {
         case "@@redux-form/CHANGE":
+        case "@@redux-form/RESET":
+        case playerConstants.LOGIN_REQUEST:
+        case playerConstants.LOGOUT:
             return state.set("error","");  
         case playerConstants.GETALL_SUCCESS:
             return fetchPlayers(state, action.payload);
@@ -72,7 +76,9 @@ export function reducer(state = initialState, action) {
             return updatePlayerScore(state, action.payload.name, action.payload.score);
         case playerConstants.SET_CURRENT_PLAYER:
              return updateCurrentPlayer(state, action.payload);
-
+        case playerConstants.LOGIN_FAILURE:
+             let error = action.payload.error?action.payload.error:action.payload;   
+             return state.set("error",error);  
         default:
             return state;
     }

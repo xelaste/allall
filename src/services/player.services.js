@@ -3,12 +3,35 @@ import config from 'config';
 
 export const playerService = 
 {
+    login,
+    logout,
     register,
     getAll,
     getWinners,
     update,
     delete: _delete
 };
+function login(username,password) 
+{
+    const player={username:username,password:password}
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(player)
+    };
+    return fetch(`${config.apiUrl}/players/` + username + "/login", requestOptions)
+    .then(handleResponse)
+    .then(player => {
+            localStorage.setItem('player', JSON.stringify(player));
+            return player;
+        }
+    );
+}
+function logout() 
+{
+    localStorage.removeItem('player');
+}
+    
 
 function register(player) {
     const requestOptions = {
@@ -20,6 +43,8 @@ function register(player) {
 
     return fetch(`${config.apiUrl}/players`, requestOptions).then(handleResponse);
 }
+
+
 function update(player) {
     const requestOptions = {
         method: 'PUT',

@@ -23,7 +23,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { playerActions } from "../actions/player";
-function mapStateToProps(state) {
+function mapStateToProps(state) 
+{
   return {
     winners: [...state.player.get('winners')],
     currentPlayer: state.player.get('currentPlayer'),

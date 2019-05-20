@@ -1,9 +1,10 @@
 import { playerConstants } from "../constants/playerConstants";
 import { playerService } from "../services/player.services";
 
+
 export const playerActions = {
-  //login,
-  //logout,
+  login,
+  logout,
   register,
   getAll,
   getWinners,
@@ -27,7 +28,6 @@ function register(player)
       .then(
         result => {
                 dispatch(success(result));
-                dispatch(getAll());
                 },
         error => {
                    dispatch(failure(error.toString()))
@@ -93,4 +93,28 @@ function updatePlayerScore(playerName, score)
   function failure(error) { return { type: playerConstants.UPDATE_FAILURE, payload:error } }
 }
 
+function logout() 
+{
+  playerService.logout();
+  return { type: playerConstants.LOGOUT };
+}
 
+function login(username, password,history) {
+  return dispatch => {
+      dispatch(request({ username }));
+
+      playerService.login(username, password)
+          .then(
+              user => { 
+                  dispatch(success(user));
+                  history.push("/");
+              },
+              error => {
+                  dispatch(failure(error));
+              }
+          );
+  };
+  function request(user) { return { type: playerConstants.LOGIN_REQUEST, payload:user  }}
+  function success(user) { return { type: playerConstants.LOGIN_SUCCESS, payload:user  }}
+  function failure(error){ return { type: playerConstants.LOGIN_FAILURE, payload:error }}
+}
