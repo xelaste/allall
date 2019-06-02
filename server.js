@@ -1,30 +1,31 @@
 var express = require('express');
 var bodyParser = require('body-parser')
+const jwt = require('./jwt');
 const Logger = require('./logger');
+const errorHandler = require('./error-handler');
 const logger = Logger.createLogger("server");
 var path = require('path');
 var app = express();
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 function logRequest(req, res, next) 
 {
-    logger.debug(req.url)
+    logger.debug(req.url);
+    logger.debug(req.headers)
+    logger.debug(req.body);
     next();
 }
 app.use(logRequest);
-function logError(err, req, res, next) {
-    logger.error(err)
-    next();
-}
-app.use(logError);
 
 app.use(express.static('public'));
 app.use(express.static('dist'));
 app.use(express.static('css'));
-
+app.use(jwt());
+app.use(errorHandler);
 app.use('/players', require("./controllers/playerController"));
+
+
 
 
 app.get('/*', function(req, res) {
