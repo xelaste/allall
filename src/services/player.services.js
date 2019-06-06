@@ -41,7 +41,7 @@ function register(player) {
 
     };
 
-    return fetch(`${config.apiUrl}/players`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/players/register`, requestOptions).then(handleResponse);
 }
 
 

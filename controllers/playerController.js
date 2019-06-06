@@ -60,7 +60,7 @@ router.post('/authenticate/:username', function (req, res,next)
     });
 });
 
-router.post('/', function (req, res,next) {
+router.post('/register', function (req, res,next) {
     logger.debug(req.body);
     res.set({ 'content-type': 'application/json;charset=utf-8' });
     var newPlayer = {

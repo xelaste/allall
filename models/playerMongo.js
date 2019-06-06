@@ -1,4 +1,10 @@
 var mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Logger = require('../logger');
+const config = require('../config.json');
+const logger = Logger.createLogger("playerMongo");
+
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/bullscows', { useMongoClient: true });
 // User Schema
@@ -34,6 +40,9 @@ module.exports.createPlayer = async function (data)
     newPlayer.score=data.score;
     newPlayer.username=data.username,
     newPlayer.profileImage='noimage.png';
+    if (data.password) {
+        newPlayer.hash = bcrypt.hashSync(data.password, 10);
+    }
     if ( (await player.findOne({ name: data.name })) === null)
     {
         await newPlayer.save();
@@ -68,4 +77,24 @@ module.exports.updatePlayer = async function (data)
         },
         {save: true, upsert: true}
     )
+};
+
+module.exports.login = async function (username,password) 
+{
+    logger.debug("login in -->");
+    let player =  await await player.findOne({ name: username }).then((response)=> {
+         if (response)
+         {
+            logger.debug(response);
+            return  response
+        }
+    if (player && bcrypt.compareSync(password, player.hash)) 
+    {
+        const token = jwt.sign({ sub: player.id }, config.secret);
+        return {
+            ...player,
+            token
+        };
+    }
+})
 };

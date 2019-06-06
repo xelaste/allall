@@ -1,4 +1,9 @@
 const loki = require("lokijs");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Logger = require('../logger');
+const config = require('../config.json');
+const logger = Logger.createLogger("playerLoki");
 
 var db = new loki('quickstart.db', {
     autoload: true,
@@ -22,6 +27,9 @@ module.exports.init=databaseInitialize;
 module.exports.createPlayer = async function (newPlayer) 
 {
     let players = db.getCollection("players");
+    if (newPlayer.password) {
+        newPlayer.hash = bcrypt.hashSync(newPlayer.password, 10);
+    }    
     let result = players.findOne({ name: newPlayer.name });
     if (result === null)
     {
@@ -62,3 +70,18 @@ module.exports.updatePlayer = async function (updatedPlayer)
     return result;
 };
 
+module.exports.login = async function (username,password) 
+{
+    logger.debug("login in -->");
+    let players = db.getCollection("players");
+    let player = players.findOne({ name: username });
+    if (player && bcrypt.compareSync(password, player.hash)) 
+    {
+        const token = jwt.sign({ sub: player.id }, config.secret);
+        logger.debug("login out ---<");
+        return {
+            ...player,
+            token
+        };
+    }
+};
