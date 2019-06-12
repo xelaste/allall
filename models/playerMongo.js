@@ -83,14 +83,15 @@ module.exports.login = async function (username,password)
 {
     logger.debug("login in -->");
     return await player.findOne({ name: username }).then((response)=> {
-        logger.debug(response);
         if (response && bcrypt.compareSync(password, response.hash)) 
         {
+            logger.debug(response);
             const token = jwt.sign({ sub: response.id }, config.secret);
             return {
                 ...response,
                 token
             };
         }
+        else return false;
       })
 };

@@ -7,10 +7,10 @@ const config = require('../config.json');
 const logger = Logger.createLogger("playerStitch");
 const secret = "[qwerty123456]";
 
-const bullsandcowsURL="http://webhooks.mongodb-stitch.com/api/client/v2.0/app/bullsandcows-pepdu/service/BullsAndCows/incoming_webhook"
+const bullsandcowsURL="https://webhooks.mongodb-stitch.com/api/client/v2.0/app/bullsandcows-pepdu/service/BullsAndCows/incoming_webhook"
 let httpService = null;
 if (process.env.HTTP_PROXY) {
-    httpService =  request.defaults({ proxy: "http://" + process.env.HTTP_PROXY });
+    httpService =  request.defaults({ proxy: "http://" + process.env.HTTPS_PROXY });
 }
 else
 {
