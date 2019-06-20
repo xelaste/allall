@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Logger = require('../logger');
-const config = require('../config.json');
+const config = require('config');
 const logger = Logger.createLogger("playerMongo");
 
 mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://localhost/bullscows', { useMongoClient: true });
+mongoose.connect( config.dbConfig.mongodb.connectionString, { useMongoClient: true });
 // User Schema
 var PlayerSchema = mongoose.Schema({
     loginname: {
@@ -86,7 +86,7 @@ module.exports.login = async function (username,password)
         if (response && bcrypt.compareSync(password, response.hash)) 
         {
             logger.debug(response);
-            const token = jwt.sign({ sub: response.id }, config.secret);
+            const token = jwt.sign({ sub: response.id }, config.jwt.secret);
             return {
                 ...response,
                 token

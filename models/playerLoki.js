@@ -2,10 +2,10 @@ const loki = require("lokijs");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Logger = require('../logger');
-const config = require('../config.json');
+const config = require('config');
 const logger = Logger.createLogger("playerLoki");
 
-var db = new loki('quickstart.db', {
+var db = new loki(config.dbConfig.loki.dbname, {
     autoload: true,
     autoloadCallback : databaseInitialize,
     autosave: true, 
@@ -77,11 +77,15 @@ module.exports.login = async function (username,password)
     let player = players.findOne({ name: username });
     if (player && bcrypt.compareSync(password, player.hash)) 
     {
-        const token = jwt.sign({ sub: player.id }, config.secret);
+        const token = jwt.sign({ sub: player.id }, configj.jwt.secret);
         logger.debug("login out ---<");
         return {
             ...player,
             token
         };
+    }
+    else
+    {
+        return false;
     }
 };

@@ -1,13 +1,15 @@
-const winston = require('winston')
+const winston = require('winston');
+const config = require('config')
 const { format} = require('winston');
 const { combine, timestamp, label, prettyPrint,colorize } = format;
 const container = new Map()
+const logLevel = config.logger.severity;
 console.log("**********************");
-console.log(process.env.LOG_LEVEL);
+console.log(logLevel);
 console.log("**********************");
-if (process.env.LOG_LEVEL)
+if (logLevel)
 {
-    winston.level = process.env.LOG_LEVEL;
+    winston.level = logLevel;
 }
 else
 {

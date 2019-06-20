@@ -2,12 +2,12 @@ const request = require('request-promise');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Logger = require('../logger');
-const config = require('../config.json');
+const config = require('config');
 
 const logger = Logger.createLogger("playerStitch");
-const secret = "[qwerty123456]";
+const secret = config.dbConfig.stitch.secret;
 
-const bullsandcowsURL="https://webhooks.mongodb-stitch.com/api/client/v2.0/app/bullsandcows-pepdu/service/BullsAndCows/incoming_webhook"
+const bullsandcowsURL=config.dbConfig.stitch.url;
 let httpService = null;
 if (process.env.HTTP_PROXY) {
     httpService =  request.defaults({ proxy: "http://" + process.env.HTTPS_PROXY });
@@ -140,7 +140,7 @@ module.exports.login = async function (username,password)
     logger.debug(player);
     if (player && bcrypt.compareSync(password, player.hash)) 
     {
-        const token = jwt.sign({ sub: player.id }, config.secret);
+        const token = jwt.sign({ sub: player.id }, config.jwt.secret);
         return {
             ...player,
             token
