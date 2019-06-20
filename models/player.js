@@ -1,4 +1,5 @@
-switch (process.env.DB_TYPE)
+const config=require('config');
+switch (config.dbConfig.dbtype)
 {
     case "MONGO": module.exports = require ("./playerMongo");
                   break;
