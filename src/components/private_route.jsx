@@ -1,12 +1,12 @@
 import React from 'react';
-import { Route, Redirect,DefaultRoute } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 class PrivateRoute extends React.Component {
     render() {
       const { component: Component, ...rest } = this.props
       return (
         <Route {...rest}  render={(props) => {
-            return localStorage.getItem('player') ? (
+            return sessionStorage.getItem('player') ? (
                 <Component {...props} />
               ):(
                 <Redirect to={{

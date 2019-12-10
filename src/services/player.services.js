@@ -22,14 +22,14 @@ function login(username,password)
     return fetch(`${config.apiUrl}/players/authenticate/` + username , requestOptions)
     .then(handleResponse)
     .then(player => {
-            localStorage.setItem('player', JSON.stringify(player));
+            sessionStorage.setItem('player', JSON.stringify(player));
             return player;
         }
     );
 }
 function logout() 
 {
-    localStorage.removeItem('player');
+    sessionStorage.removeItem('player');
 }
     
 

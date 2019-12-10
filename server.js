@@ -31,7 +31,8 @@ app.use('/players', require("./controllers/playerController"));
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '/public/index.html'), function(err) {
       if (err) {
-        res.status(500).send(err)
+        logger.error(JSON. stringify(err));
+        res.status(500).send(JSON. stringify(err));
       }
     })
   })

@@ -2,7 +2,7 @@ const Logger = require('./logger');
 const logger = Logger.createLogger("error-handler");
 const errorHandler = function (err, req, res, next) 
 {
-    logger.error(err);
+    logger.error(JSON. stringify(err));
     logger.error(err.name);
     if (typeof (err) === 'string') {
         // custom application error
