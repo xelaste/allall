@@ -77,7 +77,7 @@ module.exports.login = async function (username,password)
     let player = players.findOne({ name: username });
     if (player && bcrypt.compareSync(password, player.hash)) 
     {
-        const token = jwt.sign({ sub: player.id }, configj.jwt.secret);
+        const token = jwt.sign({ sub: player.id }, config.jwt.secret);
         logger.debug("login out ---<");
         return {
             ...player,

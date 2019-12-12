@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import { symbols as gameSymbols } from '../actions/bullscowsgame';
 import AutoPlay from '../auto/autoplay'
+import {playerConstants} from "../constants/playerConstants";
 
 const autoPlay = new AutoPlay();
 const initialState = Immutable.fromJS(
@@ -71,14 +72,14 @@ function play(state, guess) {
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
+        case playerConstants.LOGIN_REQUEST:
+        case playerConstants.LOGOUT:
+        case gameSymbols.stop:
+            return state.set("gamingNow", false);
         case gameSymbols.play:
             return play(state, action.payload);
         case gameSymbols.newGame:
             return newGame(state, action.payload.secret, action.payload.vsSomputer);
-
-        case gameSymbols.stop:
-            return state.set("gamingNow", false);
-
         case gameSymbols.skip:
             return skip(state);
         default:
