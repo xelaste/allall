@@ -26,6 +26,7 @@ function mapStateToProps(state) {
     gamingNow: state.game.get('gamingNow'),
     results: [...state.game.get("results")],
     vsComputer: state.game.get("vsComputer"),
+    heap: state.game.get("heap"),
     values: getFormValues('gameForm')(state)
   }
 }
@@ -97,7 +98,8 @@ class Game extends React.Component {
     gamingNow: PropTypes.bool,
     error: PropTypes.string,
     results: PropTypes.array,
-    vsComputer: PropTypes.bool
+    vsComputer: PropTypes.bool,
+    heap: PropTypes.array
   };
   constructor(props) 
   {
@@ -171,7 +173,7 @@ class Game extends React.Component {
           </table>
         </div>
         <div className="col-sm-4" style={{ backgroundColor: "pink" }}>
-          <GameForm isLost={this.isLost()} isWin={this.isWin()} vsComputer={this.vsComputer()} secret={this.props.secret} playerName={this.props.currentPlayer} />
+          <GameForm isLost={this.isLost()} isWin={this.isWin()} vsComputer={this.vsComputer()} heap={this.props.heap} secret={this.props.secret} playerName={this.props.currentPlayer} />
         </div>
       </div>
       {!this.isWin() && !this.isLost() &&

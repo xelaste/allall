@@ -2,6 +2,7 @@ import React from 'react';
 import {formValues,Field, reduxForm } from 'redux-form';
 
 
+
 const GameForm = props => {
     const { error, handleSubmit } = props;
     const digit = (value ,previousValue ,allValues ,previousAllValues) => 
@@ -76,6 +77,16 @@ const GameForm = props => {
                         />
                     </span>
                 </div>
+                }
+                {
+                    props.vsComputer &&
+                    <div className="overflow-auto" style={{ 
+                        height: "20em",
+                        backgroundColor: "DeepPink" }}>
+                        {
+                            props.heap.map((x,i)=><span>{i > 0 && i % 6==0 && <br/>}{x}&nbsp;</span> )                                 
+                        }
+                    </div>   
                 }
             </form>
         </div>
