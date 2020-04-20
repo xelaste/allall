@@ -93,7 +93,7 @@ let conf = {
   externals: {
     // global app config object
     config: JSON.stringify({
-        apiUrl: apiUrl
+        apiUrl: apiUrl 
     })
 }
 };
