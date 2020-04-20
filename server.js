@@ -38,6 +38,6 @@ app.get('/*', function(req, res) {
   })
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, function () {
-    logger.info('Example app listening on port 3000!');
+    logger.info('Example app listening on port' + PORT + '!');
 });
 
