@@ -4,6 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
+const apiUrl = 'production' == process.env.NODE_ENV ? 'https://bullandcow.herokuapp.com' :  'http://localhost:3000';
 
 let conf = {
   mode:nodeEnv,
@@ -92,7 +93,7 @@ let conf = {
   externals: {
     // global app config object
     config: JSON.stringify({
-        apiUrl: 'http://localhost:3000'
+        apiUrl: apiUrl
     })
 }
 };
