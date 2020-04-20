@@ -8,7 +8,7 @@ const GameForm = props => {
     const digit = (value ,previousValue ,allValues ,previousAllValues) => 
     { 
         let prev = [previousAllValues.d1, previousAllValues.d2,previousAllValues.d3,previousAllValues.d4];
-        let curr = [previousAllValues.d1, previousAllValues.d2,previousAllValues.d3,previousAllValues.d4];
+        let curr = [allValues.d1, allValues.d2,allValues.d3,allValues.d4];
         for (let i=0;i<curr.length;i++)
         {
             for (let j=0;j<prev.length;j++)    
@@ -23,7 +23,11 @@ const GameForm = props => {
     };
     function onChange(event, newValue, previousValue, name)
     {
-        
+        if ("123456789".includes(newValue) && newValue.length>0)
+        {
+            let x = parseInt(name.substring(2, 1)) % 4 + 1;
+            document.getElementsByName("d" + x)[0].focus();
+        }
     }
     let showSecret = props.vsComputer ||  props.isWin || props.isLost
     return (
@@ -43,6 +47,7 @@ const GameForm = props => {
                             className="form-control form-control-sm"
                             normalize={digit}
                             onChange={onChange}
+                            forwardRef="true"
                         />
                     </span>
                     <span className="digitSpan mr-1">
@@ -53,6 +58,7 @@ const GameForm = props => {
                             maxLength="1"
                             className="form-control form-control-sm"
                             normalize={digit}
+                            onChange={onChange}
                         />
                     </span>
                     <span className="digitSpan mr-1">
@@ -63,6 +69,7 @@ const GameForm = props => {
                             maxLength="1"
                             className="form-control form-control-sm"
                             normalize={digit}
+                            onChange={onChange}
                         />
                     </span>
                     <span className="digitSpan mr-1">
@@ -74,6 +81,7 @@ const GameForm = props => {
                             pattern="[1-9]{1}"
                             className="form-control form-control-sm"
                             normalize={digit}
+                            onChange={onChange}
                         />
                     </span>
                 </div>

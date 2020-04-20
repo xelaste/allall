@@ -75,7 +75,6 @@ function withTimer(Component) {
 class Clock extends React.Component {
   render() {
     let percent = Math.floor(100 * ((this.props.ticks % this.props.period)/this.props.period));
-    console.log(percent);
     let style={};
     style.width=percent + "%";
     return <div className="progress" style={{height: "1.5em"}}>
