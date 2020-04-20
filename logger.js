@@ -4,9 +4,9 @@ const { format} = require('winston');
 const { combine, timestamp, label, prettyPrint,colorize } = format;
 const container = new Map()
 const logLevel = config.logger.severity;
-console.log("**********************");
+console.log("************************");
 console.log(logLevel);
-console.log("**********************");
+console.log("************************");
 if (logLevel)
 {
     winston.level = logLevel;
