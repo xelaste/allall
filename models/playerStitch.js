@@ -41,14 +41,19 @@ module.exports.getPlayers = async function (limit)
 module.exports.createPlayer = async function (data) 
 {
     let url=bullsandcowsURL + "/BullsAndCows_createPlayer?secret=" + secret;
+    let newPlayer = {};
+    newPlayer.name=data.name;
+    newPlayer.score=data.score;
+    newPlayer.username=data.username,
+    newPlayer.profileImage='noimage.png';
     if (data.password) {
-        data.hash = bcrypt.hashSync(data.password, 10);
+        newPlayer.hash = bcrypt.hashSync(data.password, 10);   
     }
     console.debug(data);
     var options = {
         method: 'POST',
         uri: url,
-        body: data,
+        body: newPlayer,
         json: true // Automatically stringifies the body to JSON
     };
     return await httpService (options)

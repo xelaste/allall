@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node server.js",
+    "debug": "node --inspect server.js",
     "heroku-postbuild": "webpack -p",
     "test": "node node_modules/karma/bin/karma start",
     "karma": "node node_modules/karma/bin/karma start",

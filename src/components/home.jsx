@@ -87,20 +87,22 @@ class Home extends React.Component {
         <div className="mt-10 h-75">
           {this.props.error && <div className="mt-10 px-2 col-sm-6 alert alert-danger">{this.props.error}</div>}
           {this.playersList()}
-          <div className="m-3 h-25">
-            <div className="h-75"></div>
-            <div>
-            <button className="btn btn-primary btn-sm col-md-1 ml-1"
+          <div  style={{height:"30vh"}}></div>
+          <div className="mt-3 h-25">
+            <div className="row">
+            <button className="btn btn-primary btn-sm col-md-2 ml-1"
               type="button" disabled={(this.props.pristine && !this.props.currentPlayer) || this.props.submiting}
               onClick={() => { this.updateCurrentPlayer("");}}>
               Clear Values
             </button>
-            <button className="btn btn-primary btn-sm col-md-1 ml-1"
+            
+            <button className="btn col-md-2 ml-3 btn-primary"
               type="button" disabled={!this.props.currentPlayer}
               onClick={() => this.props.dispatch(gameActions.newGame(generateSecretArray()))}>
               Play
             </button>
-            <button className="btn btn-primary btn-sm col-md-1 ml-1"
+            
+            <button className="btn col-md-2 ml-3 btn-primary"
               type="button"
               onClick={() => this.props.dispatch(gameActions.newGame(generateSecretArray(), true))}>
               Play Vs Computer

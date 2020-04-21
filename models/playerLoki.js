@@ -24,12 +24,17 @@ module.exports = new Object();
 
 module.exports.init=databaseInitialize;
 
-module.exports.createPlayer = async function (newPlayer) 
+module.exports.createPlayer = async function (data) 
 {
     let players = db.getCollection("players");
-    if (newPlayer.password) {
-        newPlayer.hash = bcrypt.hashSync(newPlayer.password, 10);
-    }    
+    let newPlayer = {};
+    newPlayer.name=data.name;
+    newPlayer.score=data.score;
+    newPlayer.username=data.username,
+    newPlayer.profileImage='noimage.png';
+    if (data.password) {
+        newPlayer.hash = bcrypt.hashSync(data.password, 10);   
+    } 
     let result = players.findOne({ name: newPlayer.name });
     if (result === null)
     {

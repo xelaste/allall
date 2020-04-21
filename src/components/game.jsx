@@ -148,30 +148,34 @@ class Game extends React.Component {
      </div> 
       {this.isWin() && <div className="alert alert-success w-25">Winner</div>}
       {this.isLost() && <div className="alert alert-danger w-25">Game is lost</div>}
-      < div className="row w-50">
-        <div className="col-sm-6 pr-1">
-          <table style={{ backgroundColor: 'yellow'}} className="h-100 table table-striped table-sm">
+      <div className="row w-50">
+      <div style={{backgroundColor: 'yellow'}} className="col-sm-6 ml-2">
+        <table   className="table table-sm table-striped" >
             <thead>
               <tr>
-                <th >#</th>
-                <th >Guess</th>
-                <th >Cows</th>
-                <th >Bulls</th>
+                <th style={{width:'3vw'}}>#</th>
+                <th style={{width:'5vw'}}>Guess</th>
+                <th style={{width:'5vw'}}>Cows</th>
+                <th style={{width:'5vw'}}>Bulls</th>
               </tr>
             </thead>
+        </table>
+        <div className="overflow-auto" style={{height:"40vh"}}>
+          <table className="table table-striped table-sm" >
             <tbody>
               {this.fillGuesses().map((item, idx) =>
                 <tr key={idx} className="px-0">
-                  <td>{idx + 1}</td>
-                  <td>{item.guess}</td>
-                  <td>{item.exists}</td>
-                  <td>{item.match}</td>
+                  <td style={{width:'2vw',textAlign:'center'}}>{idx + 1}</td>
+                  <td style={{width:'5vw',textAlign:'center'}} >{item.guess}</td>
+                  <td style={{width:'5vw',textAlign:'center'}}>{item.exists}</td>
+                  <td style={{width:'5vw',textAlign:'center'}}>{item.match}</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-        <div className="col-sm-4" style={{ backgroundColor: "pink" }}>
+        </div>
+        <div className="col-sm-4 ml-2" style={{ backgroundColor: "pink" ,height:"50vh"}}>
           <GameForm isLost={this.isLost()} isWin={this.isWin()} vsComputer={this.vsComputer()} heap={this.props.heap} secret={this.props.secret} playerName={this.props.currentPlayer} />
         </div>
       </div>
