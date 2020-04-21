@@ -20,7 +20,7 @@ app.use(logRequest);
 
 app.use(express.static('public'));
 app.use(express.static('dist'));
-app.use(express.static('css'));
+
 app.use(jwt());
 app.use(errorHandler);
 app.use('/players', require("./controllers/playerController"));
