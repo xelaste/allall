@@ -100,7 +100,6 @@ const GameForm = props => {
         </div>
     );
 };
-
 export default reduxForm({
     form: 'gameForm', // a unique identifier for this form
 })(GameForm);
