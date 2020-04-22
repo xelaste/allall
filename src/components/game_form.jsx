@@ -1,8 +1,6 @@
 import React from 'react';
 import {formValues,Field, reduxForm } from 'redux-form';
 
-
-
 const GameForm = props => {
     const { error, handleSubmit } = props;
     const digit = (value ,previousValue ,allValues ,previousAllValues) => 
