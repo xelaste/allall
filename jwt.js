@@ -9,7 +9,7 @@ function jwt() {
             /\/login/,
             /\/register/,
             /\/players\/authenticate*/,
-            /\/players\/register*/,
+            /\/players\/register*/
         ]
     });
 }
