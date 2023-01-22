@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const Logger = require('../logger');
 const config = require('config');
 const logger = Logger.createLogger("playerMongo");
-
 mongoose.Promise = require('bluebird');
 mongoose.connect( config.dbConfig.mongodb.connectionString, { useMongoClient: true });
 // User Schema
